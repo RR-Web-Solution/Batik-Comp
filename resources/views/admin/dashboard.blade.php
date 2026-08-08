@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Roastery Admin - Bean &amp; Brew</title>
+    <title>Batik Admin - Batik Nusantara</title>
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome 6 Icons -->
@@ -14,7 +14,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&amp;family=Work+Sans:wght@400;600&amp;display=swap"
         rel="stylesheet" />
-    <!-- Custom Styles for Artisanal Brew Theme -->
+    <!-- Custom Styles for Artisanal Batik Theme -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {{-- <style>
         :root {
@@ -75,11 +75,11 @@
         <div class="container-fluid px-3 py-3 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
                 <a href="{{ route('dashboard') }}">
-                    <img alt="Bean &amp; Brew Logo" class="rounded object-fit-cover"
+                    <img alt="Batik Nusantara Logo" class="rounded object-fit-cover"
                     src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
                     style="width: 32px; height: 32px;" />
                 </a>
-                <span class="font-heading text-primary-custom fs-3 fw-semibold mb-0">Bean &amp; Brew</span>
+                <span class="font-heading text-primary-custom fs-3 fw-semibold mb-0">Batik Nusantara</span>
             </div>
             <div class="d-flex align-items-center gap-2">
                 <a class="nav-link-custom d-flex align-items-center gap-2 p-2 rounded" href="{{ route('product') }}">

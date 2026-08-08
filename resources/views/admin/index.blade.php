@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Bean &amp; Brew - Login Admin</title>
+    <title>Batik Nusantara - Login Admin</title>
     <!-- Bootstrap 5.3 CSS -->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet" />
@@ -93,7 +93,7 @@
         class="w-100 sticky-top border-bottom border-secondary-container bg-surface d-flex justify-content-center align-items-center py-2 px-3 z-3"
         style="background-color: var(--bb-surface);">
         <div class="font-headline fs-2 fw-semibold text-primary-brand">
-            Bean &amp; Brew
+            Batik Nusantara
         </div>
     </header>
     <!-- Main Content Canvas -->
@@ -102,20 +102,20 @@
         <div class="bg-surface-container-lowest border border-secondary-container rounded p-4 p-md-5 w-100 shadow-sm d-flex flex-column align-items-center"
             style="max-width: 450px;">
             <!-- Logo -->
-            <img alt="Bean &amp; Brew Logo"
+            <img alt="Batik Nusantara Logo"
                 class="mb-4 rounded shadow-sm border border-secondary-container object-fit-cover"
                 src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
                 style="width: 96px; height: 96px;" />
             <!-- Welcome Text -->
             <h1 class="font-headline fs-3 text-primary-brand mb-2 text-center fw-semibold">Akses Admin</h1>
             <p class="text-center mb-5" style="color: var(--bb-on-surface-variant);">Silakan masuk untuk mengelola
-                portal roastery Anda.</p>
+                portal batik Anda.</p>
             <!-- Login Form -->
             <form action="{{ route('login.action') }}" class="w-100 d-flex flex-column gap-4" method="POST">
                 <div>
                     <label class="form-label label-caps text-uppercase mb-1" for="admin_email">Email Admin</label>
                     <input class="form-control bg-transparent border-secondary-container" id="admin_email"
-                        name="email" placeholder="nama@beanandbrew.com" required="" type="email" />
+                        name="email" placeholder="nama@batiknusantara.com" required="" type="email" />
                 </div>
                 <div>
                     <label class="form-label label-caps text-uppercase mb-1" for="admin_password">Kata Sandi</label>
@@ -133,7 +133,7 @@
     <footer
         class="w-100 py-4 footer-bg border-top border-secondary-container d-flex justify-content-center align-items-center px-3 px-md-5">
         <p class="mb-0 text-center" style="color: var(--bb-on-surface-variant);">
-            © 2026 Bean &amp; Brew Roastery. Crafted for clarity.
+            © 2026 Batik Nusantara. Crafted for clarity.
         </p>
     </footer>
     <!-- Bootstrap 5.3 JS Bundle -->

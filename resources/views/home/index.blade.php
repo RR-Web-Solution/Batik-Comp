@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Bean &amp; Brew - Company Profile</title>
+    <title>Batik Nusantara - Company Profile</title>
     <!-- Bootstrap 5.3 CSS -->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet" />
@@ -23,7 +23,7 @@
             --bs-body-font-family: 'Work Sans', sans-serif;
             --bs-heading-font-family: 'Source Serif 4', serif;
 
-            /* Theme Colors from Artisanal Brew Aesthetic */
+            /* Theme Colors from Artisanal Batik Aesthetic */
             --bs-primary: #32170d;
             --bs-primary-rgb: 50, 23, 13;
             --bs-primary-container: #4b2c20;
@@ -185,7 +185,7 @@
         <div class="container-xl d-flex justify-content-between align-items-center" style="height: 64px;">
             <a class="navbar-brand d-flex align-items-center gap-2 text-primary-custom fw-bold fs-4 m-0 text-decoration-none"
                 href="{{ route('home') }}">
-                <img alt="Bean &amp; Brew Logo"
+                <img alt="Batik Nusantara Logo"
                     src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
                     style="height: 32px; width: auto; object-fit: contain;" />
             </a>
@@ -208,15 +208,15 @@
         <section class="container-xl mt-4">
             <div class="row align-items-center g-4 flex-column-reverse flex-md-row">
                 <div class="col-12 col-md-6 text-center text-md-start">
-                    <h1 class="display-4 fw-bold text-primary-custom mb-3">Seni Memanggang Kopi yang Sempurna</h1>
-                    <p class="fs-5 text-secondary-custom mb-4">Mendedikasikan diri untuk menghadirkan pengalaman kopi
-                        terbaik dari biji pilihan hingga ke cangkir Anda. Nikmati kehangatan dalam setiap tegukan.</p>
+                    <h1 class="display-4 fw-bold text-primary-custom mb-3">Seni Membatik yang Sempurna</h1>
+                    <p class="fs-5 text-secondary-custom mb-4">Mendedikasikan diri untuk menghadirkan pengalaman batik
+                        terbaik dari kain pilihan hingga ke tangan Anda. Nikmati keindahan dalam setiap corak.</p>
                     <a class="btn btn-primary-custom py-2 px-4" href="{{ route('product.index') }}">
                         Lihat Koleksi Kami
                     </a>
                 </div>
                 <div class="col-12 col-md-6">
-                    <img alt="Coffee Pouring" class="img-fluid rounded-4 ambient-shadow w-100 object-fit-cover"
+                    <img alt="Proses Membatik" class="img-fluid rounded-4 ambient-shadow w-100 object-fit-cover"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4yw85mpwi7VFPzFO0WTIWHL6F4Sl8lf5pMDZ52t-MuMmVkSt1yIoG0MBLWhnqfxgFmjMpmAHGmOlGainJjGcgFTAev49kZfjJAmY7vS-y22nJrtAovdqBlNsAs1Jg3FiSfs6juXXp5PM2MUOJS4CUC6AR5PyMOS-EiyOcSYZBM9XO4ferjaEmfS8O9-tEhBnz4ckJZTA69a5ARxcpZI7XQEnM7rBZcOS7e6SaokBAfmTbLZJz6swv"
                         style="aspect-ratio: 4/3;" />
                 </div>
@@ -227,17 +227,17 @@
             <div class="bg-surface-lowest border border-outline-variant rounded-4 p-4 p-md-5 ambient-shadow">
                 <div class="row g-4 align-items-center">
                     <div class="col-12 col-lg-5 text-center">
-                        <img alt="Bean &amp; Brew Logo" class="img-fluid"
+                        <img alt="Batik Nusantara Logo" class="img-fluid"
                             src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
                             style="max-width: 250px;" />
                     </div>
                     <div class="col-12 col-lg-7">
                         <h2 class="fw-bold text-primary-custom mb-3">Tentang Perusahaan</h2>
-                        <p class="text-secondary-custom mb-0">Bean &amp; Brew berawal dari kecintaan sederhana terhadap
-                            kopi berkualitas. Berdiri sejak tahun 2018, kami telah berkembang dari sebuah kedai kecil
-                            menjadi rumah roasting artisanal yang dipercaya oleh para penikmat kopi. Warisan kami
-                            dibangun di atas dedikasi terhadap kualitas, hubungan langsung dengan petani, dan komitmen
-                            untuk mengeksplorasi potensi penuh dari setiap biji kopi.</p>
+                        <p class="text-secondary-custom mb-0">Batik Nusantara berawal dari kecintaan sederhana terhadap
+                            warisan budaya Indonesia. Berdiri sejak tahun 2018, kami telah berkembang dari sebuah
+                            rumah produksi kecil menjadi rumah batik artisanal yang dipercaya oleh para pecinta batik.
+                            Warisan kami dibangun di atas dedikasi terhadap kualitas, hubungan langsung dengan para
+                            pengrajin, dan komitmen untuk mengeksplorasi potensi penuh dari setiap motif batik.</p>
                     </div>
                 </div>
             </div>
@@ -250,9 +250,9 @@
                         class="bg-surface-lowest border border-outline-variant rounded-4 p-4 ambient-shadow h-100 d-flex flex-column gap-3">
                         <div class="icon-box"><i class="fa-solid fa-eye fs-4"></i></div>
                         <h3 class="fs-4 fw-bold text-primary-custom mb-0">Visi</h3>
-                        <p class="text-secondary-custom mb-0">Menjadi roastery kopi artisanal terkemuka yang diakui atas
+                        <p class="text-secondary-custom mb-0">Menjadi rumah batik artisanal terkemuka yang diakui atas
                             kualitas luar biasa, praktik berkelanjutan, dan kemampuan untuk menyatukan komunitas melalui
-                            kecintaan pada kopi.</p>
+                            kecintaan pada batik.</p>
                     </div>
                 </div>
                 <div class="col-12 col-md-6">
@@ -261,10 +261,10 @@
                         <div class="icon-box"><i class="fa-solid fa-bullseye fs-4"></i></div>
                         <h3 class="fs-4 fw-bold text-primary-custom mb-0">Misi</h3>
                         <ul class="text-secondary-custom mb-0 ps-3">
-                            <li class="mb-2">Mendapatkan biji kopi terbaik melalui perdagangan langsung dan adil.</li>
-                            <li class="mb-2">Memanggang setiap batch dengan presisi untuk menonjolkan profil rasa
-                                unik.</li>
-                            <li>Mengedukasi dan menginspirasi pelanggan tentang seni dan ilmu apresiasi kopi.</li>
+                            <li class="mb-2">Mendapatkan kain batik terbaik melalui perdagangan langsung dan adil.</li>
+                            <li class="mb-2">Membuat setiap helai dengan presisi untuk menonjolkan corak dan
+                                motif yang unik.</li>
+                            <li>Mengedukasi dan menginspirasi pelanggan tentang seni dan budaya apresiasi batik.</li>
                         </ul>
                     </div>
                 </div>
@@ -282,12 +282,12 @@
                     </div>
                     <div class="col-12 col-md-8 text-center text-md-start">
                         <h2 class="fw-bold text-primary-custom mb-1">Rendy</h2>
-                        <h4 class="text-secondary-custom fs-6 fw-normal mb-3">Pendiri &amp; Master Roaster</h4>
-                        <p class="text-secondary-custom mb-0">Dengan pengalaman lebih dari satu dekade di industri kopi,
-                            Rendy percaya bahwa memanggang kopi adalah perpaduan antara seni dan sains. Dedikasinya
-                            terhadap kesempurnaan telah membawa Bean &amp; Brew memenangkan berbagai penghargaan lokal.
-                            Bagi Rendy, setiap cangkir kopi menceritakan kisah perjalanan biji kopi dari tanah hingga ke
-                            tangan Anda.</p>
+                        <h4 class="text-secondary-custom fs-6 fw-normal mb-3">Pendiri &amp; Maestro Batik</h4>
+                        <p class="text-secondary-custom mb-0">Dengan pengalaman lebih dari satu dekade di industri batik,
+                            Rendy percaya bahwa membatik adalah perpaduan antara seni dan ketelitian. Dedikasinya
+                            terhadap kesempurnaan telah membawa Batik Nusantara memenangkan berbagai penghargaan lokal.
+                            Bagi Rendy, setiap helai batik menceritakan kisah perjalanan motif dari tangan pengrajin
+                            hingga ke tangan Anda.</p>
                     </div>
                 </div>
             </div>
@@ -297,18 +297,18 @@
                 <div class="row g-5">
                     <div class="col-12 col-lg-5">
                         <h2 class="fw-bold text-primary-custom mb-3">Hubungi Kami</h2>
-                        <p class="text-secondary-custom mb-4">Punya pertanyaan tentang kopi kami atau ingin bekerja
+                        <p class="text-secondary-custom mb-4">Punya pertanyaan tentang batik kami atau ingin bekerja
                             sama? Jangan ragu untuk menghubungi kami.</p>
                         <div class="d-flex flex-column gap-3">
                             <div class="d-flex align-items-center gap-3">
                                 <div class="icon-box" style="width: 40px; height: 40px;"><i
                                         class="fa-solid fa-location-dot"></i></div>
-                                <span class="text-secondary-custom">Jl. Kopi Roaster No. 8, Jakarta Selatan</span>
+                                <span class="text-secondary-custom">Jl. Batik Nusantara No. 8, Jakarta Selatan</span>
                             </div>
                             <div class="d-flex align-items-center gap-3">
                                 <div class="icon-box" style="width: 40px; height: 40px;"><i
                                         class="fa-solid fa-envelope"></i></div>
-                                <span class="text-secondary-custom">hello@beanandbrew.id</span>
+                                <span class="text-secondary-custom">hello@batiknusantara.id</span>
                             </div>
                             <div class="d-flex align-items-center gap-3">
                                 <div class="icon-box" style="width: 40px; height: 40px;"><i
@@ -346,8 +346,8 @@
     <!-- Footer -->
     <footer class="bg-surface-low border-top border-outline-variant mt-auto">
         <div class="container-xl py-5 d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
-            <div class="text-primary-custom fw-semibold label-caps text-center text-md-start">© 2026 Bean &amp; Brew
-                Artisanal Coffee. Hak Cipta Dilindungi.</div>
+            <div class="text-primary-custom fw-semibold label-caps text-center text-md-start">© 2026 Batik Nusantara.
+                Hak Cipta Dilindungi.</div>
             <nav class="d-flex flex-wrap justify-content-center gap-4">
                 <a class="footer-link fs-6" href="#">Kebijakan Privasi</a>
                 <a class="footer-link fs-6" href="#">Syarat &amp; Ketentuan</a>

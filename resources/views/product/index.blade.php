@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Bean &amp; Brew - Our Blends</title>
+    <title>Batik Nusantara - Our Collections</title>
     <!-- Bootstrap 5.3 CSS -->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet" />
@@ -188,10 +188,10 @@
         <div class="container-xl px-3 px-md-5">
             <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="{{ route('home') }}">
                 <i class="fa-solid fa-mug-hot text-primary-custom fs-4"></i>
-                <img alt="Bean &amp; Brew Logo" class="d-inline-block align-text-top" height="32"
+                <img alt="Batik Nusantara Logo" class="d-inline-block align-text-top" height="32"
                     src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
                     width="auto" />
-                <span class="font-headline headline-md text-primary-custom mb-0">Bean &amp; Brew</span>
+                <span class="font-headline headline-md text-primary-custom mb-0">Batik Nusantara</span>
             </a>
             <div class="d-flex align-items-center">
                 <button aria-label="Shopping Bag" class="btn btn-link text-muted-custom p-2 rounded-circle">
@@ -203,8 +203,8 @@
     <main class="min-vh-100">
         <!-- Hero Section -->
         <section class="container-xl px-3 px-md-5 pt-5 pb-4 text-center">
-            <h1 class="font-headline display-lg text-primary-custom mb-4">Our Blends</h1>
-            <p class="body-lg text-muted-custom mx-auto" style="max-width: 600px;">Expertly roasted, sustainably
+            <h1 class="font-headline display-lg text-primary-custom mb-4">Our Collections</h1>
+            <p class="body-lg text-muted-custom mx-auto" style="max-width: 600px;">Expertly crafted, sustainably
                 sourced.</p>
         </section>
         <!-- Product Grid -->
@@ -218,7 +218,7 @@
                                 <h2 class="font-headline headline-sm text-primary-custom mb-0">
                                     {{ $product->name }}
                                 </h2>
-                                <span class="font-headline headline-sm text-muted-custom text-nowrap">{{ $product->price}}</span>
+                                <span class="font-headline headline-sm text-muted-custom text-nowrap">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
                             </div>
                             <p class="card-text text-muted-custom mb-4 flex-grow-1">{{ $product->description }}</p>
                             <button
@@ -238,8 +238,8 @@
         <div class="container-xl px-3 px-md-5">
             <div class="row gy-4">
                 <div class="col-12 col-md-6 d-flex flex-column gap-2">
-                    <span class="font-headline headline-sm text-primary-custom">Bean &amp; Brew</span>
-                    <p class="mb-0">© 2026 Bean &amp; Brew Roastery. Crafted for clarity.</p>
+                    <span class="font-headline headline-sm text-primary-custom">Batik Nusantara</span>
+                    <p class="mb-0">© 2026 Batik Nusantara. Crafted for clarity.</p>
                 </div>
                 <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
                     <ul class="nav gap-3">
@@ -247,7 +247,7 @@
                             <a class="nav-link p-0 footer-link" href="#">Sourcing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link p-0 footer-link" href="#">Brew Guides</a>
+                            <a class="nav-link p-0 footer-link" href="#">Batik Guides</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link p-0 footer-link" href="#">Wholesale</a>
