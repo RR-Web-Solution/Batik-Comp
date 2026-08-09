@@ -1,53 +1,23 @@
 /* ==========================================================================
-   Design Tokens (merged from all :root blocks)
+   Design Tokens
    ========================================================================== */
 :root {
-    /* Legacy tokens */
     --primary-color: #32170d;
+    --primary-container: #4b2c20;
+    --on-primary: #ffffff;
     --bg-color: #fbf9f7;
-    --text-color: #1b1c1b;
+    --on-background: #1b1c1b;
     --text-muted: #504440;
     --border-color: #d5c3bd;
+    --surface-low: #f5f3f1;
+    --surface-lowest: #ffffff;
+    --tertiary-fixed: #fcdccd;
     --hover-bg: #e4e2e0;
 
-    /* bb-* tokens */
-    --bb-primary: #32170d;
-    --bb-primary-container: #4b2c20;
-    --bb-on-primary: #ffffff;
-    --bb-background: #fbf9f7;
-    --bb-surface: #fbf9f7;
-    --bb-surface-bright: #fbf9f7;
-    --bb-surface-container-low: #f5f3f1;
-    --bb-surface-container-lowest: #ffffff;
-    --bb-on-background: #1b1c1b;
-    --bb-on-surface: #1b1c1b;
-    --bb-on-surface-variant: #504440;
-    --bb-secondary-container: #ebddd2;
-    --bb-outline-variant: #d5c3bd;
+    --bb-surface: var(--bg-color);
+    --bb-on-surface-variant: var(--text-muted);
 
-    /* bs-* tokens */
-    --bs-body-font-family: 'Work Sans', sans-serif;
-    --bs-heading-font-family: 'Source Serif 4', serif;
-    --bs-primary: #32170d;
-    --bs-primary-rgb: 50, 23, 13;
-    --bs-primary-container: #4b2c20;
-    --bs-on-primary-container: #bf9282;
-    --bs-secondary: #675d54;
-    --bs-secondary-container: #ebddd2;
-    --bs-tertiary-fixed: #fcdccd;
-    --bs-body-bg: #fbf9f7;
-    --bs-body-color: #1b1c1b;
-    --bs-surface-variant: #e4e2e0;
-    --bs-on-surface-variant: #504440;
-    --bs-surface-lowest: #ffffff;
-    --bs-surface-low: #f5f3f1;
-    --bs-surface-high: #eae8e6;
-    --bs-border-color: #d5c3bd;
-    --bs-outline: #83746f;
-
-    /* Fonts */
     --font-heading: "Source Serif 4", serif;
-    --font-headline: "Source Serif 4", serif;
     --font-body: "Work Sans", sans-serif;
 }
 
@@ -55,154 +25,64 @@
    Base
    ========================================================================== */
 body {
-    background-color: var(--bb-background);
-    color: var(--bb-on-background);
+    background-color: var(--bg-color);
+    color: var(--on-background);
     font-family: var(--font-body);
-    height: 100vh;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+h1, h2, h3, h4, h5, h6,
 .navbar-brand,
-.display-font {
-    font-family: var(--bs-heading-font-family);
-}
-
-footer {
-    border-top: 1px solid var(--bb-secondary-container);
-}
-
-/* ==========================================================================
-   Typography Utilities
-   ========================================================================== */
-.font-heading {
+.display-font,
+.font-heading,
+.font-headline {
     font-family: var(--font-heading);
 }
 
-.font-headline {
-    font-family: var(--font-headline);
-}
-
-.display-lg {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 40px;
-}
-
-@media (min-width: 768px) {
-    .display-lg {
-        font-size: 48px;
-        line-height: 56px;
-        letter-spacing: -0.02em;
-    }
-}
-
-.headline-md {
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 40px;
-}
-
-.headline-sm {
-    font-size: 24px;
-    font-weight: 600;
-    line-height: 32px;
-}
-
-.body-lg {
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 28px;
-}
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+.display-lg { font-size: 32px; font-weight: 700; }
+.headline-md { font-size: 32px; font-weight: 600; }
+.headline-sm { font-size: 24px; font-weight: 600; }
+.body-lg { font-size: 18px; }
 
 .label-caps {
-    font-family: var(--bs-body-font-family);
     font-size: 12px;
     font-weight: 600;
-    line-height: 16px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
 /* ==========================================================================
-   Color Utilities
+   Colors
    ========================================================================== */
-.text-primary-custom {
-    color: var(--primary-color) !important;
-}
+.text-primary-custom,
+.text-primary-brand { color: var(--primary-color); }
 
-.text-muted-custom {
-    color: var(--text-muted) !important;
-}
+.text-muted-custom,
+.text-secondary-custom { color: var(--text-muted); }
 
-.text-primary-brand {
-    color: var(--bb-primary);
-}
+.bg-surface { background-color: var(--bg-color); }
+.bg-surface-low,
+.footer-bg { background-color: var(--surface-low); }
+.bg-surface-lowest,
+.bg-surface-container-lowest { background-color: var(--surface-lowest); }
 
-.text-secondary-custom {
-    color: var(--bs-on-surface-variant);
-}
+.border-secondary-container,
+.border-outline-variant { border-color: var(--border-color) !important; }
 
-.bg-surface {
-    background-color: var(--bb-surface);
-}
-
-.bg-surface-low {
-    background-color: var(--bb-surface-container-low);
-}
-
-.bg-surface-lowest {
-    background-color: var(--bb-surface-container-lowest);
-}
-
-.bg-surface-high {
-    background-color: var(--bs-surface-high);
-}
-
-.bg-surface-container-lowest {
-    background-color: #ffffff;
-}
-
-.bg-secondary-container {
-    background-color: var(--bs-secondary-container);
-}
-
-.footer-bg {
-    background-color: var(--bb-surface-container-low);
-}
-
-.border-secondary-container {
-    border-color: var(--bb-secondary-container) !important;
-}
-
-.border-outline-variant {
-    border-color: var(--bs-border-color) !important;
-}
-
-.ambient-shadow {
-    box-shadow: 0 4px 20px -2px rgba(43, 26, 17, 0.05);
-}
+.ambient-shadow { box-shadow: 0 4px 20px -2px rgba(43, 26, 17, 0.05); }
 
 /* ==========================================================================
    Header / Navigation
    ========================================================================== */
-.header-custom {
-    border-bottom: 1px solid var(--border-color);
-}
+.header-custom,
+.navbar-custom { border-bottom: 1px solid var(--border-color); }
 
-.navbar-custom {
-    border-bottom: 1px solid var(--bb-secondary-container);
-    background-color: var(--bb-surface);
-}
+.navbar-custom { background-color: var(--bg-color); }
 
 .nav-link-custom {
     color: var(--text-muted);
@@ -212,117 +92,71 @@ footer {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     text-decoration: none;
-    transition: background-color 0.2s, color 0.2s;
 }
 
 .nav-link-custom:hover {
     background-color: var(--hover-bg);
-    color: var(--text-color);
+    color: var(--on-background);
 }
 
 /* ==========================================================================
    Buttons & Forms
    ========================================================================== */
-.btn-primary-custom {
-    background-color: var(--bb-primary);
-    color: var(--bb-on-primary);
+.btn-primary-custom,
+.btn-primary-brand {
+    background-color: var(--primary-color);
+    color: var(--on-primary);
     border: none;
     border-radius: 0.25rem;
-    font-family: var(--bs-body-font-family);
+    font-family: var(--font-body);
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    transition: background-color 0.2s ease;
 }
 
-.btn-primary-custom:hover {
-    background-color: var(--bb-primary-container);
-    color: var(--bb-on-primary);
-}
-
-.btn-primary-brand {
-    background-color: var(--bb-primary);
-    color: var(--bb-on-primary);
-    border: none;
-}
-
+.btn-primary-custom:hover,
 .btn-primary-brand:hover {
-    background-color: var(--bb-primary-container);
-    color: var(--bb-on-primary);
+    background-color: var(--primary-container);
+    color: var(--on-primary);
 }
 
 .form-control:focus {
-    border-color: var(--bb-primary);
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 0.25rem rgba(50, 23, 13, 0.25);
 }
 
 /* ==========================================================================
-   Product Cards
+   Components
    ========================================================================== */
 .product-card {
-    border: 1px solid var(--bb-outline-variant);
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     box-shadow: 0 4px 20px -2px rgba(43, 26, 17, 0.05);
-    transition: box-shadow 0.3s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.product-card:hover {
-    box-shadow: 0 4px 20px -2px rgba(43, 26, 17, 0.15);
-}
+.product-card:hover { box-shadow: 0 4px 20px -2px rgba(43, 26, 17, 0.15); }
 
-.product-img-wrapper {
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    background-color: var(--bb-surface-container-low);
-    position: relative;
-}
-
-.product-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease-out;
-}
-
-.product-card:hover .product-img {
-    transform: scale(1.05);
-}
-
-.badge-flavor {
-    background-color: var(--bb-secondary-container);
-    color: var(--bb-primary);
-    padding: 0.25rem 0.75rem;
-    border-radius: 50rem;
-}
-
-/* ==========================================================================
-   Misc Components
-   ========================================================================== */
 .icon-box {
     width: 48px;
     height: 48px;
-    background-color: var(--bs-tertiary-fixed);
-    color: var(--bs-primary-container);
+    background-color: var(--tertiary-fixed);
+    color: var(--primary-container);
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 0.25rem;
 }
 
-/* ==========================================================================
-   Footer
-   ========================================================================== */
 .footer-link {
-    color: var(--bb-on-surface-variant);
+    color: var(--text-muted);
     text-decoration: underline;
-    transition: color 0.2s ease;
 }
 
 .footer-link:hover {
-    color: var(--bb-primary);
+    color: var(--primary-color);
     text-decoration: underline;
 }
