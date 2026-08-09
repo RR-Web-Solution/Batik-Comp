@@ -3,11 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
 Route::post('/admin/action', [App\Http\Controllers\AdminController::class, 'action'])->name('login.action');
