@@ -14,7 +14,7 @@ capabilities:
 
 locality:
   regions:
-    - ap-singapore
+    - fr-roub1
 
 scaling:
   mode: single_concurrency
