@@ -1,126 +1,89 @@
-# DEPLOYMENT.md — Deploy Batik Nusantara ke Wasmer Edge
+# DEPLOYMENT.md — Deploy Batik Nusantara ke Laravel Cloud
 
-Panduan men-deploy proyek Laravel ini (PHP 8.5, MySQL) ke **Wasmer Edge** (gratis
-untuk proyek hobby: ~100k request/bulan, SSL otomatis, managed MySQL bawaan, tanpa
-kartu kredit). Sumber resmi: https://docs.wasmer.io/edge/guides/laravel
+Panduan men-deploy proyek Laravel ini ke **Laravel Cloud** (https://cloud.laravel.com) —
+platform resmi dari tim Laravel: auto-deploy tiap `git push`, SSL otomatis, managed
+MySQL/Postgres, tanpa perlu khawatir build image. Sumber resmi:
+https://laravel.com/cloud/docs/quickstart
 
 ---
 
 ## 1. Prasyarat
 
-- Akun di https://wasmer.io (login dengan GitHub).
-- Repo ini sudah di-push ke GitHub.
-- CLI Wasmer (opsional, untuk debug/secrets): `curl https://wasmer.sh -sSfL | sh`
+- Akun di https://cloud.laravel.com (login dengan GitHub).
+- Repo ini sudah di-push ke GitHub (`github.com/rndyv9/Coffee-Comp-Mock`).
+- Versi PHP aplikasi: `^8.3` (local PHP 8.4). Laravel Cloud mendukung PHP 8.2+.
 
-## 2. Buat `app.yaml` di root proyek
+## 2. Buat aplikasi dari repo yang sudah ada
 
-```yaml
-kind: wasmer.io/App.v0
-name: batik-nusantara
-package: batik-nusantara/batik-nusantara
+1. Buka https://cloud.laravel.com → **New application** → **From existing repository**.
+2. Hubungkan akun GitHub (Laravel Cloud App → pilih akses ke repo ini).
+3. Pilih repo `Coffee-Comp-Mock`, beri nama aplikasi (mis. `batik-nusantara`), pilih
+   **Region**, lalu **Create Application**.
+4. Aplikasi dibuat dengan environment default (`production`).
 
-env:
-  APP_ENV: production
-  APP_DEBUG: "false"
-  APP_URL: "https://batik-nusantara.wasmer.app"
+## 3. Konfigurasi environment (dashboard)
 
-capabilities:
-  database:
-    engine: mysql
+Buka environment **production** → tab **Settings**:
 
-locality:
-  regions:
-    - ap-singapore
+- **Runtime:** `PHP`, pilih versi PHP (sesuai kebutuhan; `^8.3` aplikasi ini OK di 8.3).
+- **Build command:**
+  ```sh
+  composer install --no-dev
+  ```
+  (Aplikasi tidak memakai `@vite`/Vite di view — Bootstrap via CDN — jadi `npm run build`
+  tidak wajib. Tambahkan `&& npm run build` jika nanti mulai memakai Vite.)
+- **Deploy command** (migrasi otomatis tiap deploy):
+  ```sh
+  php artisan migrate --force
+  ```
 
-scaling:
-  mode: single_concurrency
-```
+Catatan: `composer install --no-dev` membuat dev dependencies (Pest/PHPUnit) **tidak**
+ikut terpasang di produksi — tidak ada isu versi PHP untuk tooling.
 
-Catatan:
-- `capabilities.database` → Wasmer membuatkan MySQL ter-manage dan mengisi otomatis
-  env `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` (Laravel tinggal
-  memakainya lewat `.env` config database). Engine default memang `mysql`.
-- `locality.regions` harus **satu region yang mendukung database** — cek daftarnya di
-  https://docs.wasmer.io/edge/learn/regions (contoh yang dipakai docs: `fr-roub1`).
-- `scaling.mode: single_concurrency` wajib untuk PHP (single-threaded).
+## 4. Environment variables
 
-## 3. Deploy
+Di dashboard environment → tab **Variables**, set minimal:
 
-**Lewat web (paling mudah):**
-1. Buka https://wasmer.io/apps → **Deploy** → pilih repo GitHub ini.
-2. Wasmer mendeteksi Laravel otomatis (repo berisi `*.php` → install Composer deps,
-   entry point `public/index.php`).
-3. Aplikasi langsung live di `https://batik-nusantara.wasmer.app`. Setiap `git push`
-   berikutnya auto-deploy.
+- **`APP_KEY`** (wajib) — generate sekali di lokal:
+  ```sh
+  php artisan key:generate --show
+  ```
+  lalu paste nilainya ke dashboard.
+- `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL` sesuai URL aplikasi
+  (dari dashboard, otomatis terisi).
 
-**Alternatif CLI:**
-```bash
-wasmer login
-wasmer deploy          # guided: publish package + buat app
-wasmer app secrets create APP_KEY "base64:$(php artisan key:generate --show)"
-```
+## 5. Database (managed)
 
-## 4. Env & secrets
+1. Di **infrastructure canvas** environment, klik **Create and connect a database** →
+   **Create new database cluster** → pilih **MySQL** (atau Postgres).
+2. Laravel Cloud otomatis meng-inject env `DB_HOST`, `DB_PORT`, `DB_DATABASE`,
+   `DB_USERNAME`, `DB_PASSWORD` — tidak perlu set manual.
+3. Selesai deploy pertama, jalankan seeder **sekali** untuk data demo (produk/kategori/
+   setting + user admin `admin@gmail.com` / `123123123`). Karena `php artisan migrate --force`
+   sudah otomatis, seed bisa dijalankan via **Deploy command** sekali pakai:
+   ```sh
+   php artisan migrate --force --seed
+   ```
+   lalu kembalikan ke `php artisan migrate --force` untuk deploy berikutnya.
+   (Seeder idempotent; `OrderSeeder` membuat order demo baru tiap jalan — jangan ulang
+   tanpa perlu.)
 
-- **`APP_KEY` wajib diisi** — generate sekali:
-  `php artisan key:generate --show`, lalu set sebagai env/secret (lihat `env:` di
-  `app.yaml` atau `wasmer app secrets create APP_KEY "base64:..."`).
-- Sebelum deploy, pastikan `.env.example` tidak menyimpan `APP_KEY` produksi.
+## 6. Deploy & update
 
-## 5. Setup database (sekali jalan)
+- Klik **Deploy** → Laravel Cloud build, jalankan deploy command, dan langsung live di URL
+  `https://<nama-app>.laravel.cloud` (dapat diganti custom domain di tab Domains).
+- **Update** = `git push` ke branch yang terhubung (auto-deploy otomatis).
+- **Rollback**: dashboard environment → Deployment history → pilih versi sebelumnya.
 
-MySQL otomatis sudah ada; tinggal migrasi + seed. Jalankan **sekali** setelah deploy
-pertama (Seeder idempotent untuk produk/kategori/setting; `OrderSeeder` membuat order
-demo baru — jangan jalankan ulang tanpa perlu):
+## 7. Catatan yang perlu diketahui
 
-**Via SSH app** (didokumentasikan Wasmer):
-```yaml
-capabilities:
-  ssh:
-    enabled: true
-    users:
-      - username: <app-shortid>_admin
-        authorized_keys:
-          - "ssh-rsa AAAA..."
-```
-lalu `wasmer app ssh <app> -- php artisan migrate --seed --force`.
-
-**Alternatif: job `post-deployment` sekali pakai** — tambahkan ke `app.yaml`, deploy
-sekali, lalu hapus:
-```yaml
-jobs:
-  - name: migrate-db
-    trigger: post-deployment
-    action:
-      execute:
-        command: php
-        cli_args: ["artisan", "migrate", "--seed", "--force"]
-        timeout: 5m
-```
-
-## 6. Update & rollback
-
-- Update = `git push` ke branch yang terhubung (auto-deploy).
-- Rollback: Wasmer menyimpan versi app — pilih versi sebelumnya di dashboard
-  (https://wasmer.io/apps → app → Versions).
-
-## 7. Batasan yang perlu diketahui
-
-- **Gambar upload admin (`public/uploads`) tidak persisten** — filesystem Edge
-  bersifat sementara (hilang saat redeploy/scale-to-zero). Commit gambar awal ke repo,
-  atau tambah *volume* (`volumes:` di `app.yaml`) — tapi volume RW-many belum cocok
-  untuk kasus kompleks. Untuk demo, upload lewat admin dianggap sementara.
-- Database MySQL satu per app; engine tidak bisa diubah tanpa hapus DB.
-- PHP single-threaded → `single_concurrency`; jangan harap 1 instance melayani banyak
-  request paralel (Edge menskalakan instance otomatis).
-
-## 8. Custom domain (opsional)
-
-Di dashboard app → Domains, tambahkan domain `batik-nusantara.dev` (atau lainnya),
-lalu arahkan DNS CNAME ke `batik-nusantara.wasmer.app`. SSL diurus otomatis.
+- **Gambar upload admin (`public/uploads`) tidak persisten** — filesystem instance
+  bersifat sementara (hilang saat redeploy). Untuk demo cukup commit gambar ke repo, atau
+  gunakan object storage (S3-compatible) via `cloud:files` bila nanti perlu upload nyata.
+- Session/cache default (file) aman untuk skala kecil; gunakan Redis/DB driver bila perlu.
 
 ---
 
-Sumber: [Laravel on Wasmer Edge](https://docs.wasmer.io/edge/guides/laravel/) ·
-[App Configuration](https://docs.wasmer.io/edge/configuration) · [Jobs](https://docs.wasmer.io/edge/configuration/jobs) ·
-[Supported Frameworks](https://docs.wasmer.io/edge/learn/supported-frameworks-and-languages/)
+Sumber: [Laravel Cloud Quickstart](https://laravel.com/cloud/docs/quickstart) ·
+[Databases (MySQL)](https://laravel.com/cloud/docs/resources/databases/laravel-mysql) ·
+[CLI (cloud deploy)](https://cloud.laravel.com/docs/api/cli)
