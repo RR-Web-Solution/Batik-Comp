@@ -183,6 +183,20 @@ Tautan footer berwarna abu dengan underline; hover menjadi cokelat.
 - `home/index.blade.php:352,353,354` (Kebijakan, Syarat, Kemitraan)
 - `product/index.blade.php:247,250,253,256` (Sourcing, Guides, Wholesale, Privacy)
 
+### DataTables (`.dt-*`)
+Tema admin untuk semua tabel `table.js-datatable` (dashboard, order, product,
+user, category). Semua styling hidup di `style.css` — view hanya menyediakan
+stack CDN + inisialisasi, tidak ada CSS inline per view.
+- `.dt-toolbar` / `.dt-footer` → flex, jarak antar baris tabel.
+- `.dt-search input.dt-input` & `.dt-length select.dt-input` → input rounded
+  dengan border `--border-color`; focus ring cokelat `--primary-color`.
+- `.dt-buttons .dt-button` → tombol export rounded, hover terisi cokelat.
+- `.dt-paging .dt-paging-button` → tombol paginasi rounded; halaman aktif & hover
+  terisi cokelat; `.disabled` lebih redup.
+- `table.js-datatable thead th` → latar `--surface-low`, teks `--primary-color`,
+  uppercase kecil (menggantikan `.table-light` Bootstrap di thead).
+- `table.js-datatable tbody tr:hover` → latar `--surface-low`.
+
 ---
 
 ## 9. Catatan Penting

@@ -404,7 +404,7 @@ Every session, follow this loop:
 
 ## 14. Handoff Checklist (final phase)
 
-- [ ] Write a `DEPLOYMENT.md` or equivalent: env vars, build/migrate/seed commands, cache clears, web server notes.
+- [x] Write a `DEPLOYMENT.md` or equivalent: env vars, build/migrate/seed commands, cache clears, web server notes.
 - [ ] Confirm static/legacy assets are superseded or kept as reference — **ask the user first**.
 - [ ] Final `git` state: clean, single handoff commit if the user approves.
 - [ ] Update the README with run instructions.
