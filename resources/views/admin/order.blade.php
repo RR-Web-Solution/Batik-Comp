@@ -139,9 +139,6 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="8" class="text-center py-4 text-muted">Belum ada pesanan.</td>
-                                </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -171,6 +168,9 @@
                 dom: '<"dt-toolbar"lBf>rt<"dt-footer"ip>',
                 columnDefs: [
                     { orderable: false, targets: [0, -1] },
+                    { responsivePriority: 1, targets: -1 },
+                    { responsivePriority: 2, targets: 0 },
+                    { responsivePriority: 3, targets: 5 },
                 ],
                 buttons: [
                     { extend: 'copy', text: '<i class="fa-solid fa-copy"></i> Salin', exportOptions: { columns: ':not(.no-export)' } },
