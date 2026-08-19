@@ -16,14 +16,14 @@ kredit**). Sumber resmi: https://docs.wasmer.io/edge/guides/laravel
 
 ```yaml
 kind: wasmer.io/App.v0
-name: batik-nusantara
+name: batik-nusantara-rw
 description: Batik Nusantara storefront (Laravel + MySQL) on Wasmer Edge
-package: batik-nusantara/batik-nusantara
+package: batik-nusantara-rw/batik-nusantara-rw
 
 env:
   APP_ENV: production
   APP_DEBUG: "false"
-  APP_URL: "https://batik-nusantara.wasmer.app"
+  APP_URL: "https://batik-nusantara-rw.wasmer.app"
 
 capabilities:
   database:
@@ -61,7 +61,7 @@ dev deps). Cabang `Deploy-Wasmer` sudah disiapkan agar build lolos:
 1. Buka https://wasmer.io/apps → **Deploy** → pilih repo GitHub ini **pada branch
    `Deploy-Wasmer`**.
 2. Wasmer mendeteksi Laravel otomatis → install Composer deps, entry `public/index.php`.
-3. Aplikasi live di `https://batik-nusantara.wasmer.app`. Setiap `git push` ke branch itu
+3. Aplikasi live di `https://batik-nusantara-rw.wasmer.app`. Setiap `git push` ke branch itu
    auto-deploy.
 
 **Alternatif CLI:**
@@ -113,7 +113,7 @@ jobs:
 ## 9. Custom domain (opsional)
 
 Dashboard app → Domains → tambahkan domain, arahkan DNS CNAME ke
-`batik-nusantara.wasmer.app`. SSL otomatis.
+`batik-nusantara-rw.wasmer.app`. SSL otomatis.
 
 ---
 
