@@ -23,5 +23,5 @@ scaling:
 
 volumes:
   - name: uploads
-    mount: /public/uploads
+    mount: /app/public/uploads
 # uploads persisted on Wasmer volume
