@@ -273,6 +273,8 @@
                 dom: '<"dt-toolbar"lBf>rt<"dt-footer"ip>',
                 columnDefs: [
                     { orderable: false, targets: [0, -1] },
+                    { responsivePriority: 1, targets: -1 },
+                    { responsivePriority: 2, targets: 2 },
                 ],
                 buttons: [
                     { extend: 'copy', text: '<i class="fa-solid fa-copy"></i> Salin', exportOptions: { columns: ':not(.no-export)' } },
