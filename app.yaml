@@ -20,3 +20,7 @@ locality:
 
 scaling:
   mode: single_concurrency
+
+volumes:
+  - name: uploads
+    mount: /public/uploads
