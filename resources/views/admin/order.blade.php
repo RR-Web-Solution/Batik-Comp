@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>User - Batik Nusantara</title>
+    <title>Order - Batik Nusantara</title>
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome 6 Icons -->
@@ -81,43 +81,68 @@
                 </div>
             @endif
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="font-heading text-primary-custom fw-bold mb-0">Manajemen User</h2>
-                <button class="btn text-white" style="background-color: var(--primary-color);" data-bs-toggle="modal"
-                    data-bs-target="#addUserModal">
-                    <i class="fa-solid fa-plus me-2"></i>Tambah User
-                </button>
+                <h2 class="font-heading text-primary-custom fw-bold mb-0">Manajemen Order</h2>
             </div>
+
+            {{-- Filter status --}}
+            <div class="d-flex flex-wrap gap-2 mb-3">
+                <a href="{{ route('order', ['q' => $currentSearch]) }}"
+                    class="btn btn-sm {{ ! $currentStatus ? 'text-white' : 'btn-outline-secondary' }}"
+                    style="{{ ! $currentStatus ? 'background-color: var(--primary-color);' : '' }}">
+                    Semua
+                </a>
+                @foreach ($statuses as $s)
+                    <a href="{{ route('order', ['status' => $s, 'q' => $currentSearch]) }}"
+                        class="btn btn-sm {{ $currentStatus === $s ? 'text-white' : 'btn-outline-secondary' }}"
+                        style="{{ $currentStatus === $s ? 'background-color: var(--primary-color);' : '' }}">
+                        {{ ucfirst($s) }}
+                    </a>
+                @endforeach
+            </div>
+
             <div class="bg-surface-lowest border border-outline-variant rounded-4 p-4 ambient-shadow">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle js-datatable">
                         <thead class="table-light">
                             <tr>
-                                <th class="font-heading">Nama</th>
-                                <th class="font-heading">Email</th>
-                                <th class="font-heading">Password</th>
+                                <th class="font-heading">No. Order</th>
+                                <th class="font-heading">Customer</th>
+                                <th class="font-heading">Produk</th>
+                                <th class="font-heading">Jumlah</th>
+                                <th class="font-heading">Total</th>
+                                <th class="font-heading">Status</th>
+                                <th class="font-heading">Masuk</th>
                                 <th class="font-heading text-center no-export">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($user as $u)
+                            @forelse ($orders as $order)
                                 <tr>
-                                    <td class="fw-semibold">{{ $u->name }}</td>
-                                    <td>{{ $u->email }}</td>
-                                    <td>••••••••</td>
+                                    <td class="fw-semibold">
+                                        <a class="text-decoration-none" href="{{ route('order.show', $order->id) }}">{{ $order->order_number }}</a>
+                                    </td>
+                                    <td>
+                                        {{ $order->customer_name }}
+                                        <div class="small text-muted">{{ $order->customer_phone }}</div>
+                                    </td>
+                                    <td>{{ $order->product->name }}</td>
+                                    <td>{{ $order->quantity }}</td>
+                                    <td class="fw-semibold">Rp {{ number_format($order->total, 0, ',', '.') }}</td>
+                                    <td>
+                                        <span class="badge {{ $order->statusBadgeClass() }}">{{ ucfirst($order->status) }}</span>
+                                    </td>
+                                    <td class="text-muted">{{ $order->created_at->diffForHumans() }}</td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editUserModal-{{ $u->id }}">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
-                                        <form id="deleteUserForm-{{ $u->id }}" action="{{ route('user.delete', $u->id) }}" method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <a class="btn btn-sm btn-outline-primary" href="{{ route('order.show', $order->id) }}">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="8" class="text-center py-4 text-muted">Belum ada pesanan.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -126,90 +151,6 @@
     </main>
     <!-- Bootstrap 5.3 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content"
-                style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
-                <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title font-heading fw-bold text-primary-custom" id="addUserModalLabel">Tambah User
-                        Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addUserForm" action="{{ route('user.create') }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="userName" class="form-label fw-semibold">Nama</label>
-                            <input name="name" type="text" class="form-control" id="userName"
-                                placeholder="Masukkan nama lengkap" required=""
-                                style="border-color: var(--border-color);">
-                        </div>
-                        <div class="mb-3">
-                            <label for="userEmail" class="form-label fw-semibold">Email</label>
-                            <input name="email" type="email" class="form-control" id="userEmail"
-                                placeholder="admin@example.com" required=""
-                                style="border-color: var(--border-color);">
-                        </div>
-                        <div class="mb-3">
-                            <label for="userPassword" class="form-label fw-semibold">Password</label>
-                            <input name="password" type="password" class="form-control" id="userPassword"
-                                placeholder="••••••••" required="" style="border-color: var(--border-color);">
-                        </div>
-                        <div class="modal-footer border-top-0">
-                            <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" form="addUserForm" class="btn text-white"
-                                style="background-color: var(--primary-color);">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @foreach ($user as $u)
-    <div class="modal fade" id="editUserModal-{{ $u->id }}" tabindex="-1" aria-labelledby="editUserModalLabel-{{ $u->id }}" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content"
-                style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
-                <div class="modal-header border-bottom-0">
-                    <h5 class="modal-title font-heading fw-bold text-primary-custom" id="editUserModalLabel-{{ $u->id }}">Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editUserForm-{{ $u->id }}" action="{{ route('user.edit', $u->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label for="editUserName-{{ $u->id }}" class="form-label fw-semibold">Nama</label>
-                            <input name="name" type="text" class="form-control" id="editUserName-{{ $u->id }}"
-                                value="{{ $u->name }}" required=""
-                                style="border-color: var(--border-color);">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserEmail-{{ $u->id }}" class="form-label fw-semibold">Email</label>
-                            <input name="email" type="email" class="form-control" id="editUserEmail-{{ $u->id }}"
-                                value="{{ $u->email }}" required=""
-                                style="border-color: var(--border-color);">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editUserPassword-{{ $u->id }}" class="form-label fw-semibold">Password</label>
-                            <input name="password" type="password" class="form-control" id="editUserPassword-{{ $u->id }}"
-                                placeholder="••••••••" style="border-color: var(--border-color);">
-                        </div>
-                        <div class="modal-footer border-top-0">
-                            <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" form="editUserForm-{{ $u->id }}" class="btn text-white"
-                                style="background-color: var(--primary-color);">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
 
     {{-- jQuery → DataTables core → Buttons(+html5+print) → JSZip & pdfmake → Responsive --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

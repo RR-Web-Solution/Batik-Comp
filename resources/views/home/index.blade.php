@@ -92,6 +92,70 @@
                 </div>
             </div>
         </section>
+        <!-- Categories -->
+        <section class="container-xl" id="kategori">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-primary-custom mb-2">Koleksi Kategori</h2>
+                <p class="text-secondary-custom mb-0">Pilih kategori favorit Anda untuk melihat koleksi batik pilihan.</p>
+            </div>
+            <div class="row g-4">
+                @foreach ($categories as $category)
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <a class="text-decoration-none d-block h-100" href="{{ route('category.show', $category->slug) }}">
+                            <div
+                                class="bg-surface-lowest border border-outline-variant rounded-4 p-4 ambient-shadow h-100 d-flex flex-column gap-3">
+                                <div class="icon-box"><i class="fa-solid fa-layer-group fs-4"></i></div>
+                                <div>
+                                    <h3 class="font-headline headline-sm text-primary-custom mb-1">{{ $category->name }}</h3>
+                                    <p class="text-secondary-custom mb-2">{{ $category->description }}</p>
+                                    <span class="label-caps text-primary-custom">{{ $category->products_count }} Produk</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </section>
+        <!-- Featured Products -->
+        <section class="container-xl" id="produk-pilihan">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold text-primary-custom mb-2">Produk Pilihan</h2>
+                <p class="text-secondary-custom mb-0">Beberapa batik terbaik kami yang paling banyak diminati.</p>
+            </div>
+            <div class="row g-4">
+                @foreach ($featuredProducts as $product)
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card product-card bg-surface-lowest">
+                            @if ($product->image)
+                                <img src="{{ asset('uploads/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                            @else
+                                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="fa-solid fa-image fa-3x text-white-50"></i>
+                                </div>
+                            @endif
+                            <div class="card-body d-flex flex-column p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
+                                    <h2 class="font-headline headline-sm text-primary-custom mb-0">
+                                        {{ $product->name }}
+                                    </h2>
+                                    <span class="font-headline headline-sm text-muted-custom text-nowrap">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                </div>
+                                <p class="card-text text-muted-custom mb-4 flex-grow-1">{{ $product->description }}</p>
+                                <button
+                                    class="btn btn-primary-custom w-100 label-caps py-2 d-flex justify-content-center align-items-center gap-2"
+                                    data-bs-toggle="modal" data-bs-target="#orderModal"
+                                    data-product-id="{{ $product->id }}"
+                                    data-name="{{ $product->name }}"
+                                    data-price="{{ $product->price }}">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                    Pesan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </section>
         <!-- Vision & Mission -->
         <section class="container-xl">
             <div class="row g-4">
@@ -150,20 +214,30 @@
                         <p class="text-secondary-custom mb-4">Punya pertanyaan tentang batik kami atau ingin bekerja
                             sama? Jangan ragu untuk menghubungi kami.</p>
                         <div class="d-flex flex-column gap-3">
+                            @php
+                                $whatsappRaw = preg_replace('/[^0-9]/', '', $setting->whatsapp_number ?? '');
+                                $whatsappDisplay = preg_replace('/^62(\d{3})(\d{4})(\d+)$/', '+62 $1 $2 $3', $whatsappRaw);
+                            @endphp
                             <div class="d-flex align-items-center gap-3">
                                 <div class="icon-box" style="width: 40px; height: 40px;"><i
                                         class="fa-solid fa-location-dot"></i></div>
-                                <span class="text-secondary-custom">Jl. Batik Nusantara No. 8, Jakarta Selatan</span>
+                                <span class="text-secondary-custom">{{ $setting->address }}</span>
                             </div>
                             <div class="d-flex align-items-center gap-3">
                                 <div class="icon-box" style="width: 40px; height: 40px;"><i
                                         class="fa-solid fa-envelope"></i></div>
-                                <span class="text-secondary-custom">hello@batiknusantara.id</span>
+                                <span class="text-secondary-custom">{{ $setting->email }}</span>
                             </div>
                             <div class="d-flex align-items-center gap-3">
                                 <div class="icon-box" style="width: 40px; height: 40px;"><i
-                                        class="fa-solid fa-phone"></i></div>
-                                <span class="text-secondary-custom">+62 812 3456 7890</span>
+                                        class="fa-brands fa-whatsapp"></i></div>
+                                <a class="text-secondary-custom text-decoration-none"
+                                    href="https://wa.me/{{ $whatsappRaw }}" target="_blank">{{ $whatsappDisplay }}</a>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="icon-box" style="width: 40px; height: 40px;"><i
+                                        class="fa-solid fa-clock"></i></div>
+                                <span class="text-secondary-custom">{{ $setting->opening_hours }}</span>
                             </div>
                         </div>
                     </div>
@@ -193,6 +267,63 @@
             </div>
         </section>
     </main>
+    <!-- Order Modal -->
+    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content"
+                style="background-color: var(--bg-color); border: 1px solid var(--border-color);">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title font-heading fw-bold text-primary-custom" id="orderModalLabel">Pesan Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('order.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="product_id" id="orderProductId" value="">
+                        <div class="bg-surface-low rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
+                            <span class="font-heading fw-bold text-primary-custom" id="orderProductNameDisplay"></span>
+                            <span class="text-muted-custom fw-semibold" id="orderPriceDisplay"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderQuantity" class="form-label fw-semibold">Jumlah</label>
+                            <input name="quantity" type="number" class="form-control" id="orderQuantity"
+                                value="1" min="1" max="10000" required
+                                style="border-color: var(--border-color);">
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderName" class="form-label fw-semibold">Nama Lengkap</label>
+                            <input name="customer_name" type="text" class="form-control" id="orderName"
+                                placeholder="Masukkan nama Anda" required value="{{ old('customer_name') }}"
+                                style="border-color: var(--border-color);">
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderPhone" class="form-label fw-semibold">No. WhatsApp</label>
+                            <input name="customer_phone" type="text" class="form-control" id="orderPhone"
+                                placeholder="08xxxxxxxxxx" required value="{{ old('customer_phone') }}"
+                                style="border-color: var(--border-color);">
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderNotes" class="form-label fw-semibold">Catatan <span class="text-muted fw-normal">(opsional)</span></label>
+                            <textarea name="notes" class="form-control" id="orderNotes" rows="2"
+                                placeholder="Tulis catatan pesanan Anda, misal motif/warna yang diinginkan"
+                                style="border-color: var(--border-color);">{{ old('notes') }}</textarea>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center bg-surface-low rounded-3 p-3">
+                            <span class="fw-semibold">Estimasi Total</span>
+                            <span class="font-headline headline-sm text-primary-custom" id="orderTotalDisplay">Rp 0</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn text-white label-caps"
+                            style="background-color: var(--primary-color);">
+                            <i class="fa-brands fa-whatsapp me-2"></i>Pesan Sekarang
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Footer -->
     <footer class="bg-surface-low border-top border-outline-variant mt-auto">
         <div class="container-xl py-5 d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
@@ -205,6 +336,31 @@
             </nav>
         </div>
     </footer>
+    <script>
+        let currentOrderPrice = 0;
+
+        function formatRupiah(value) {
+            return 'Rp ' + Number(value).toLocaleString('id-ID');
+        }
+
+        function updateOrderTotal() {
+            const qty = document.getElementById('orderQuantity').value;
+            document.getElementById('orderTotalDisplay').textContent = formatRupiah(currentOrderPrice * qty);
+        }
+
+        document.querySelectorAll('button[data-bs-target="#orderModal"]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                currentOrderPrice = Number(this.dataset.price);
+                document.getElementById('orderProductId').value = this.dataset.productId;
+                document.getElementById('orderProductNameDisplay').textContent = this.dataset.name;
+                document.getElementById('orderPriceDisplay').textContent = formatRupiah(currentOrderPrice);
+                document.getElementById('orderQuantity').value = 1;
+                updateOrderTotal();
+            });
+        });
+
+        document.getElementById('orderQuantity').addEventListener('input', updateOrderTotal);
+    </script>
 </body>
 
 </html>

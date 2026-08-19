@@ -27,13 +27,13 @@ all wearing Batik-Comp's existing Bootstrap 5.3 + `style.css` batik theme.
 
 | Phase | Title | Status | Started | Finished | Session notes |
 |-------|-------|--------|---------|----------|---------------|
-| 0 | Environment / Recon | `not started` | | | |
-| 1 | Migrations (categories, orders, settings, products alter) | `not started` | | | |
-| 2 | Models + factories + seeders | `not started` | | | |
-| 3 | Settings wiring + public data plumbing | `not started` | | | |
-| 4 | Public categories + order flow (front) | `not started` | | | |
-| 5 | Admin: auth, dashboard, orders, categories, settings, DataTables | `not started` | | | |
-| 6 | Tests + lint + migrate/seed verification | `not started` | | | |
+| 0 | Environment / Recon | `done` | 2026-08-19 | 2026-08-19 | Git clean; Sail healthy; no pending migrations; routes match inventory |
+| 1 | Migrations (categories, orders, settings, products alter) | `done` | 2026-08-19 | 2026-08-19 | 4 migrations created + applied batch 2; existing data intact |
+| 2 | Models + factories + seeders | `done` | 2026-08-19 | 2026-08-19 | Category/Order/Setting models (User attribute style); Product +category/is_featured/sort_order; OrderFactory + 3 seeders; ProductSeeder & admin-user seeding made idempotent |
+| 3 | Settings wiring + public data plumbing | `done` | 2026-08-19 | 2026-08-19 | Home & product pass $setting; homepage contact data-driven + WhatsApp link; Kategori cards + Produk Pilihan grid added |
+| 4 | Public categories + order flow (front) | `done` | 2026-08-19 | 2026-08-19 | Category page (hero+price table+grid), order modal on products+home, order store/success/track with stepper, WhatsApp CTA verified via curl |
+| 5 | Admin: auth, dashboard, orders, categories, settings, DataTables | `done` | 2026-08-19 | 2026-08-19 | auth middleware on all admin routes (redirect to /admin verified); dashboard stats, order list/show/PATCH status, category CRUD (image upload), settings form — all verified via curl; DataTables stack + Indonesian locale + copy/CSV/Excel/PDF/Print on dashboard/order/product/user/category; product/user got expanded nav + DataTables |
+| 6 | Tests + lint + migrate/seed verification | `done` | 2026-08-19 | 2026-08-19 | 4 Pest feature files (20 tests, 52 assertions) green; Product/Category gained HasFactory + factories; latent bugs fixed: CategoryController filtered products by non-existent is_active (now removed), $setting null-unsafe in views/Order::whatsappUrl (now `?? new Setting` / nullsafe); pint clean; migrate:fresh --seed + full public/admin smoke pass on fresh DB |
 
 **Status legend:** `not started` · `in progress` · `blocked` · `done`
 
@@ -238,14 +238,14 @@ Steps:
 **Entry check:** Phase 0 done.
 
 Steps:
-- [ ] `php artisan make:migration create_categories_table` → per §7 schema.
-- [ ] `php artisan make:migration create_orders_table` → per §7 schema (FK product, unique order_number).
-- [ ] `php artisan make:migration create_settings_table` → per §7 schema.
-- [ ] `php artisan make:migration add_category_flags_to_products_table` → `category_id` FK nullable, `is_featured`, `sort_order`.
+- [x] `php artisan make:migration create_categories_table` → per §7 schema.
+- [x] `php artisan make:migration create_orders_table` → per §7 schema (FK product, unique order_number).
+- [x] `php artisan make:migration create_settings_table` → per §7 schema.
+- [x] `php artisan make:migration add_category_flags_to_products_table` → `category_id` FK nullable, `is_featured`, `sort_order`.
 
 **Verify:**
-- [ ] `./vendor/bin/sail artisan migrate` runs clean (existing products table untouched).
-- [ ] `./vendor/bin/sail artisan migrate:status` shows the 4 new migrations as Ran.
+- [x] `./vendor/bin/sail artisan migrate` runs clean (existing products table untouched).
+- [x] `./vendor/bin/sail artisan migrate:status` shows the 4 new migrations as Ran.
 
 **Exit criteria:** All 4 migrations applied, existing data intact. Phase 1 `done`.
 
@@ -258,15 +258,15 @@ Steps:
 **Entry check:** Phase 1 done.
 
 Steps:
-- [ ] `Category` model: `#[Fillable]` + `#[Hidden]` + `casts()` (User style), `products()` hasMany, auto-slug on `saving` (port from digital-printing `Category`).
-- [ ] `Order` model: same attribute style, `product()` belongsTo, `Order::STATUSES`, `creating` hook for `order_number`, `calculateTotal()`, `statusBadgeClass()`, `whatsappMessage()`, `whatsappUrl()` (reads `Setting`), `customerWhatsAppUrl()`, `scopeStatus()`/`scopeSearch()` if needed.
-- [ ] `Setting` model: same attribute style.
-- [ ] `Product` model: add `category()` relation + new fillable fields.
-- [ ] `OrderFactory` + `OrderSeeder` (demo orders across statuses), `CategorySeeder` (Batik Tulis / Batik Cap / Batik Printing / Kain & Pakaian, assigns existing products, marks a few featured), `SettingSeeder` (default contact row). Wire into `DatabaseSeeder`.
+- [x] `Category` model: `#[Fillable]` + `#[Hidden]` + `casts()` (User style), `products()` hasMany, auto-slug on `saving` (port from digital-printing `Category`).
+- [x] `Order` model: same attribute style, `product()` belongsTo, `Order::STATUSES`, `creating` hook for `order_number`, `calculateTotal()`, `statusBadgeClass()`, `whatsappMessage()`, `whatsappUrl()` (reads `Setting`), `customerWhatsAppUrl()`, `scopeStatus()`/`scopeSearch()` if needed.
+- [x] `Setting` model: same attribute style.
+- [x] `Product` model: add `category()` relation + new fillable fields.
+- [x] `OrderFactory` + `OrderSeeder` (demo orders across statuses), `CategorySeeder` (Batik Tulis / Batik Cap / Batik Printing / Kain & Pakaian, assigns existing products, marks a few featured), `SettingSeeder` (default contact row). Wire into `DatabaseSeeder`.
 
 **Verify:**
-- [ ] `./vendor/bin/sail artisan db:seed --no-interaction` succeeds.
-- [ ] `php artisan tinker --execute 'dump(Category::count(), Order::count(), Setting::first()?->site_name);'` (via Sail) shows seeded data.
+- [x] `./vendor/bin/sail artisan db:seed --no-interaction` succeeds.
+- [x] `php artisan tinker --execute 'dump(Category::count(), Order::count(), Setting::first()?->site_name);'` (via Sail) shows seeded data.
 
 **Exit criteria:** Models + seed data work end-to-end. Phase 2 `done`.
 
@@ -279,13 +279,13 @@ Steps:
 **Entry check:** Phase 2 done.
 
 Steps:
-- [ ] `HomeController@index` and `ProductController@index` pass `$setting` (via `Setting::first()`) into their views — **no `View::composer`**.
-- [ ] Homepage contact section reads `$setting->address/email/whatsapp_number/opening_hours` instead of hardcoded strings; WhatsApp link from `$setting->whatsapp_number`.
-- [ ] `home/index` gains "Kategori" cards section + "Produk Pilihan" (is_featured) grid using existing card classes.
+- [x] `HomeController@index` and `ProductController@index` pass `$setting` (via `Setting::first()`) into their views — **no `View::composer`**.
+- [x] Homepage contact section reads `$setting->address/email/whatsapp_number/opening_hours` instead of hardcoded strings; WhatsApp link from `$setting->whatsapp_number`.
+- [x] `home/index` gains "Kategori" cards section + "Produk Pilihan" (is_featured) grid using existing card classes.
 
 **Verify:**
-- [ ] `/` renders with settings-driven contact + categories + featured products (no Vite error; run `npm run build` if needed).
-- [ ] `php artisan route:list` unchanged for public routes.
+- [x] `/` renders with settings-driven contact + categories + featured products (no Vite error; run `npm run build` if needed).
+- [x] `php artisan route:list` unchanged for public routes.
 
 **Exit criteria:** Homepage is data-driven, still batik-styled. Phase 3 `done`.
 
@@ -298,15 +298,15 @@ Steps:
 **Entry check:** Phase 3 done.
 
 Steps:
-- [ ] `CategoryController@show(slug)` → `category/show` (hero + price table + filtered grid, chip filter JS ported from digital-printing, batik-styled).
-- [ ] Add "Pesan" buttons + shared `#orderModal` (data-attributes, qty/total preview JS) to `product/index`; keep it functional in `home/index` if featured cards have buy buttons.
-- [ ] `OrderController@store` (inline validation, duplicate-guard within 5 min, PRG to success), `success(orderNumber)`, `track(request)`.
-- [ ] `order/success` (order number ticket, WhatsApp CTA, track link) and `order/track` (search form + Bootstrap stepper for baru→diproses→selesai, rejection/menunggu states).
-- [ ] Routes in §5 public block.
+- [x] `CategoryController@show(slug)` → `category/show` (hero + price table + filtered grid, chip filter JS ported from digital-printing, batik-styled).
+- [x] Add "Pesan" buttons + shared `#orderModal` (data-attributes, qty/total preview JS) to `product/index`; keep it functional in `home/index` if featured cards have buy buttons.
+- [x] `OrderController@store` (inline validation, duplicate-guard within 5 min, PRG to success), `success(orderNumber)`, `track(request)`.
+- [x] `order/success` (order number ticket, WhatsApp CTA, track link) and `order/track` (search form + Bootstrap stepper for baru→diproses→selesai, rejection/menunggu states).
+- [x] Routes in §5 public block.
 
 **Verify:**
-- [ ] Manual flow: order via modal → redirected to success → WhatsApp message contains order details → `/lacak` finds the order.
-- [ ] `php artisan route:list` shows the new public routes.
+- [x] Manual flow: order via modal → redirected to success → WhatsApp message contains order details → `/lacak` finds the order.
+- [x] `php artisan route:list` shows the new public routes.
 
 **Exit criteria:** A customer can order, get a number, and track it. Phase 4 `done`.
 
@@ -319,18 +319,18 @@ Steps:
 **Entry check:** Phase 4 done.
 
 Steps:
-- [ ] Wrap admin routes (`/dashboard`, `/user`, `/product`, `/order*`, `/category*`, `/setting`, logout) in `middleware('auth')`; confirm unauthenticated redirect to `/admin`.
-- [ ] `admin/dashboard`: stat cards (Produk, Kategori, Pesanan, Pesanan Hari Ini, Estimasi Pendapatan) + recent orders table (`js-datatable`).
-- [ ] `admin/order` (status filter chips + table) + `admin/order-show` (detail, status update form, customer WhatsApp link) + `AdminController@orders/orderShow/updateOrderStatus`.
-- [ ] `admin/category` CRUD (mirror `admin/product`) + `AdminController@categories/createCategory/editCategory/deleteCategory`.
-- [ ] `admin/setting` form + `AdminController@settings/updateSettings`.
-- [ ] `admin/product` / `admin/user`: add category select + `is_featured`/`is_active` fields (product only); add `js-datatable` class.
-- [ ] DataTables CDN stack + Indonesian locale + copy/CSV/Excel/PDF/Print buttons (port from digital-printing admin layout) on product, user, order tables.
+- [x] Wrap admin routes (`/dashboard`, `/user`, `/product`, `/order*`, `/category*`, `/setting`, logout) in `middleware('auth')`; confirm unauthenticated redirect to `/admin`.
+- [x] `admin/dashboard`: stat cards (Produk, Kategori, Pesanan, Pesanan Hari Ini, Estimasi Pendapatan) + recent orders table (`js-datatable`).
+- [x] `admin/order` (status filter chips + table) + `admin/order-show` (detail, status update form, customer WhatsApp link) + `AdminController@orders/orderShow/updateOrderStatus`.
+- [x] `admin/category` CRUD (mirror `admin/product`) + `AdminController@categories/createCategory/editCategory/deleteCategory`.
+- [x] `admin/setting` form + `AdminController@settings/updateSettings`.
+- [x] `admin/product` / `admin/user`: add category select + `is_featured`/`is_active` fields (product only); add `js-datatable` class.
+- [x] DataTables CDN stack + Indonesian locale + copy/CSV/Excel/PDF/Print buttons (port from digital-printing admin layout) on product, user, order tables.
 
 **Verify:**
-- [ ] `/dashboard` unauth → redirected to `/admin`.
-- [ ] Order status update persists; category CRUD works; settings save and reflect on `/`.
-- [ ] DataTable buttons export/print without errors (columns `:not(.no-export)` respected).
+- [x] `/dashboard` unauth → redirected to `/admin`.
+- [x] Order status update persists; category CRUD works; settings save and reflect on `/`.
+- [x] DataTable buttons export/print without errors (columns `:not(.no-export)` respected).
 
 **Exit criteria:** Admin surfaces complete and secured; tables exportable. Phase 5 `done`.
 
@@ -343,14 +343,14 @@ Steps:
 **Entry check:** Phase 5 done.
 
 Steps:
-- [ ] Pest feature tests (create via `php artisan make:test --pest`): order store (validation, duplicate guard, total), track found/not-found, admin routes require auth, category page shows its products, settings update.
-- [ ] `vendor/bin/pint --dirty --format agent` after any PHP edits.
-- [ ] Full migrate fresh + seed on a clean DB and smoke-test all pages (public + admin).
+- [x] Pest feature tests (create via `php artisan make:test --pest`): order store (validation, duplicate guard, total), track found/not-found, admin routes require auth, category page shows its products, settings update.
+- [x] `vendor/bin/pint --dirty --format agent` after any PHP edits.
+- [x] Full migrate fresh + seed on a clean DB and smoke-test all pages (public + admin).
 
 **Verify:**
-- [ ] `php artisan test --compact` all green.
-- [ ] `vendor/bin/pint --dirty --format agent` clean.
-- [ ] `./vendor/bin/sail artisan migrate:fresh --seed` + manual smoke pass.
+- [x] `php artisan test --compact` all green.
+- [x] `vendor/bin/pint --dirty --format agent` clean.
+- [x] `./vendor/bin/sail artisan migrate:fresh --seed` + manual smoke pass.
 
 **Exit criteria:** All tests + lint pass; fresh install works. Phase 6 `done`.
 

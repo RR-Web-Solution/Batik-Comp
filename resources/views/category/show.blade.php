@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Produk - {{ $setting->site_name }}</title>
+    <title>{{ $category->name }} - Batik Nusantara</title>
     <!-- Bootstrap 5.3 CSS -->
     <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet" />
@@ -28,12 +28,16 @@
                 <img alt="Batik Nusantara Logo" class="d-inline-block align-text-top" height="32"
                     src="{{ asset('images/logo.jpg') }}"
                     width="auto" />
-                <span class="font-headline headline-md text-primary-custom mb-0">{{ $setting->site_name }}</span>
+                <span class="font-headline headline-md text-primary-custom mb-0">Batik Nusantara</span>
             </a>
             <div class="d-flex align-items-center gap-2">
                 <a class="nav-link-custom d-flex align-items-center gap-2 p-2 rounded" href="{{ route('order.track') }}">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <span>Lacak</span>
+                </a>
+                <a class="nav-link-custom d-flex align-items-center gap-2 p-2 rounded" href="{{ route('product.index') }}">
+                    <i class="fa-solid fa-box"></i>
+                    <span>Produk</span>
                 </a>
             </div>
         </div>
@@ -47,16 +51,72 @@
                 </div>
             </div>
         @endif
-        <!-- Hero Section -->
-        <section class="container-xl px-3 px-md-5 pt-5 pb-4 text-center">
-            <h1 class="font-headline display-lg text-primary-custom mb-4">Koleksi Kami</h1>
-            <p class="body-lg text-muted-custom mx-auto mb-0" style="max-width: 600px;">Dibuat dengan penuh ketelitian,
-                diwariskan dengan penuh makna.</p>
+        <!-- Category Hero -->
+        <section class="container-xl px-3 px-md-5 pt-5 pb-4">
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a class="text-decoration-none" href="{{ route('home') }}">Beranda</a></li>
+                    <li class="breadcrumb-item"><a class="text-decoration-none" href="{{ route('product.index') }}">Produk</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
+                </ol>
+            </nav>
+            <div class="row align-items-center g-4">
+                <div class="col-12 col-lg-8">
+                    <h1 class="font-headline display-lg text-primary-custom mb-3">{{ $category->name }}</h1>
+                    <p class="body-lg text-muted-custom mb-0" style="max-width: 640px;">{{ $category->description }}</p>
+                </div>
+                <div class="col-12 col-lg-4 text-center">
+                    @if ($category->image)
+                        <img src="{{ asset('uploads/' . $category->image) }}" class="img-fluid rounded-4 ambient-shadow"
+                            alt="{{ $category->name }}" style="max-height: 220px; object-fit: cover;">
+                    @else
+                        <div class="icon-box mx-auto" style="width: 96px; height: 96px; border-radius: 1rem;">
+                            <i class="fa-solid fa-layer-group fs-1"></i>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </section>
+        <!-- Price Table -->
+        <section class="container-xl px-3 px-md-5 pb-4">
+            <div class="bg-surface-lowest border border-outline-variant rounded-4 p-4 ambient-shadow">
+                <h2 class="font-headline headline-sm text-primary-custom mb-3">Daftar Harga {{ $category->name }}</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="font-heading">Produk</th>
+                                <th class="font-heading text-end">Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($products as $product)
+                                <tr>
+                                    <td class="fw-semibold">
+                                        {{ $product->name }}
+                                        @if ($product->description)
+                                            <div class="small text-muted fw-normal">{{ Str::limit($product->description, 60) }}</div>
+                                        @endif
+                                    </td>
+                                    <td class="text-end fw-bold text-primary-custom">
+                                        Rp {{ number_format($product->price, 0, ',', '.') }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="2" class="text-center py-4 text-muted">Belum ada produk di kategori ini.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </section>
         <!-- Product Grid -->
         <section class="container-xl px-3 px-md-5 pb-5 mb-5">
+            <h2 class="font-headline headline-sm text-primary-custom mb-4">Pilih Produk</h2>
             <div class="row g-4">
-                @foreach ($products as $product)
+                @forelse ($products as $product)
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="card product-card bg-surface-lowest">
                             @if ($product->image)
@@ -67,12 +127,6 @@
                                 </div>
                             @endif
                             <div class="card-body d-flex flex-column p-4">
-                                @if ($product->category)
-                                    <a class="badge text-bg-primary align-self-start text-decoration-none mb-2"
-                                        href="{{ route('category.show', $product->category->slug) }}">
-                                        {{ $product->category->name }}
-                                    </a>
-                                @endif
                                 <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
                                     <h2 class="font-headline headline-sm text-primary-custom mb-0">
                                         {{ $product->name }}
@@ -92,7 +146,11 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-12 text-center py-5">
+                        <p class="text-muted fs-5 mb-0">Belum ada produk di kategori ini.</p>
+                    </div>
+                @endforelse
             </div>
         </section>
     </main>
@@ -101,11 +159,14 @@
         <div class="container-xl px-3 px-md-5">
             <div class="row gy-4">
                 <div class="col-12 col-md-6 d-flex flex-column gap-2">
-                    <span class="font-headline headline-sm text-primary-custom">{{ $setting->site_name }}</span>
-                    <p class="mb-0">© 2026 {{ $setting->site_name }}. Hak Cipta Dilindungi.</p>
+                    <span class="font-headline headline-sm text-primary-custom">Batik Nusantara</span>
+                    <p class="mb-0">© 2026 Batik Nusantara. Hak Cipta Dilindungi.</p>
                 </div>
                 <div class="col-12 col-md-6 d-flex justify-content-md-end align-items-center">
                     <ul class="nav gap-3">
+                        <li class="nav-item">
+                            <a class="nav-link p-0 footer-link" href="{{ route('product.index') }}">Produk</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link p-0 footer-link" href="{{ route('order.track') }}">Lacak Pesanan</a>
                         </li>

@@ -1,19 +1,39 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('product.index');
-Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index']);
-Route::post('/admin/action', [App\Http\Controllers\AdminController::class, 'action'])->name('login.action');
-Route::get('/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
-Route::get('/logout', [App\Http\Controllers\AdminController::class, 'logout'])->name('logout');
-Route::get('/user', [App\Http\Controllers\AdminController::class, 'user'])->name('user');
-Route::get('/product', [App\Http\Controllers\AdminController::class, 'product'])->name('product');
-Route::post('/user', [App\Http\Controllers\AdminController::class, 'createUser'])->name('user.create');
-Route::put('/user/{id}', [App\Http\Controllers\AdminController::class, 'editUser'])->name('user.edit');
-Route::delete('/user/{id}', [App\Http\Controllers\AdminController::class, 'deleteUser'])->name('user.delete');
-Route::post('/product', [App\Http\Controllers\AdminController::class, 'createProduct'])->name('product.create');
-Route::put('/product/{id}', [App\Http\Controllers\AdminController::class, 'editProduct'])->name('product.edit');
-Route::delete('/product/{id}', [App\Http\Controllers\AdminController::class, 'deleteProduct'])->name('product.delete');
+Route::get('/products', [ProductController::class, 'index'])->name('product.index');
+Route::get('/kategori/{slug}', [CategoryController::class, 'show'])->name('category.show');
+Route::post('/pesanan', [OrderController::class, 'store'])->name('order.store');
+Route::get('/pesanan/sukses/{orderNumber}', [OrderController::class, 'success'])->name('order.success');
+Route::get('/lacak', [OrderController::class, 'track'])->name('order.track');
+Route::get('/admin', [AdminController::class, 'index']);
+Route::post('/admin/action', [AdminController::class, 'action'])->name('login.action');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
+    Route::get('/user', [AdminController::class, 'user'])->name('user');
+    Route::post('/user', [AdminController::class, 'createUser'])->name('user.create');
+    Route::put('/user/{id}', [AdminController::class, 'editUser'])->name('user.edit');
+    Route::delete('/user/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
+    Route::get('/product', [AdminController::class, 'product'])->name('product');
+    Route::post('/product', [AdminController::class, 'createProduct'])->name('product.create');
+    Route::put('/product/{id}', [AdminController::class, 'editProduct'])->name('product.edit');
+    Route::delete('/product/{id}', [AdminController::class, 'deleteProduct'])->name('product.delete');
+    Route::get('/order', [AdminController::class, 'orders'])->name('order');
+    Route::get('/order/{id}', [AdminController::class, 'orderShow'])->name('order.show');
+    Route::patch('/order/{id}', [AdminController::class, 'updateOrderStatus'])->name('order.update');
+    Route::get('/category', [AdminController::class, 'categories'])->name('category');
+    Route::post('/category', [AdminController::class, 'createCategory'])->name('category.create');
+    Route::put('/category/{id}', [AdminController::class, 'editCategory'])->name('category.edit');
+    Route::delete('/category/{id}', [AdminController::class, 'deleteCategory'])->name('category.delete');
+    Route::get('/setting', [AdminController::class, 'settings'])->name('setting');
+    Route::put('/setting/{id}', [AdminController::class, 'updateSettings'])->name('setting.update');
+});
