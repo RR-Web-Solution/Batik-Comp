@@ -5,140 +5,73 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Batik Nusantara - Login Admin</title>
+    <title>Login - Batik Nusantara</title>
     <!-- Bootstrap 5.3 CSS -->
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" rel="stylesheet" />
-    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome 6 Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Work+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&amp;family=Work+Sans:wght@400;600&amp;display=swap"
         rel="stylesheet" />
+    <!-- Custom Styles for Artisanal Batik Theme -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {{-- <style>
-        :root {
-            --bb-primary: #32170d;
-            --bb-primary-container: #4b2c20;
-            --bb-surface: #fbf9f7;
-            --bb-on-surface: #1b1c1b;
-            --bb-on-surface-variant: #504440;
-            --bb-secondary-container: #ebddd2;
-            --bb-surface-bright: #fbf9f7;
-            --bb-on-primary: #ffffff;
-            --bb-surface-container-low: #f5f3f1;
-
-            --font-headline: "Source Serif 4", serif;
-            --font-body: "Work Sans", sans-serif;
-        }
-
-        body {
-            background-color: var(--bb-surface);
-            color: var(--bb-on-surface);
-            font-family: var(--font-body);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .font-headline {
-            font-family: var(--font-headline);
-        }
-
-        .text-primary-brand {
-            color: var(--bb-primary);
-        }
-
-        .border-secondary-container {
-            border-color: var(--bb-secondary-container) !important;
-        }
-
-        .bg-surface-container-lowest {
-            background-color: #ffffff;
-        }
-
-        .form-control:focus {
-            border-color: var(--bb-primary);
-            box-shadow: 0 0 0 0.25rem rgba(50, 23, 13, 0.25);
-        }
-
-        .btn-primary-brand {
-            background-color: var(--bb-primary);
-            color: var(--bb-on-primary);
-            border: none;
-        }
-
-        .btn-primary-brand:hover {
-            background-color: var(--bb-primary-container);
-            color: var(--bb-on-primary);
-        }
-
-        .footer-bg {
-            background-color: var(--bb-surface-container-low);
-        }
-
-        .label-caps {
-            font-size: 0.75rem;
-            letter-spacing: 0.08em;
-            font-weight: 600;
-        }
-    </style> --}}
 </head>
 
-<body>
-    <!-- Minimal Header -->
-    <header
-        class="w-100 sticky-top border-bottom border-secondary-container bg-surface d-flex justify-content-center align-items-center py-2 px-3 z-3"
-        style="background-color: var(--bb-surface);">
-        <div class="font-headline fs-2 fw-semibold text-primary-brand">
-            Batik Nusantara
+<body class="d-flex flex-column min-vh-100">
+    <!-- TopAppBar -->
+    <header class="w-100 header-custom">
+        <div class="container-fluid px-3 py-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-2">
+                <a href="{{ route('home') }}">
+                    <img alt="Batik Nusantara Logo" class="rounded object-fit-cover"
+                        src="{{ asset('images/logo.jpg') }}"
+                        style="width: 32px; height: 32px;" />
+                </a>
+                <span class="font-heading text-primary-custom fs-3 fw-semibold mb-0">Batik Nusantara</span>
+            </div>
         </div>
     </header>
     <!-- Main Content Canvas -->
-    <main class="flex-grow-1 d-flex align-items-center justify-content-center p-3 p-md-5">
-        <!-- Login Card -->
-        <div class="bg-surface-container-lowest border border-secondary-container rounded p-4 p-md-5 w-100 shadow-sm d-flex flex-column align-items-center"
-            style="max-width: 450px;">
-            <!-- Logo -->
-            <img alt="Batik Nusantara Logo"
-                class="mb-4 rounded shadow-sm border border-secondary-container object-fit-cover"
-                src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
-                style="width: 96px; height: 96px;" />
-            <!-- Welcome Text -->
-            <h1 class="font-headline fs-3 text-primary-brand mb-2 text-center fw-semibold">Akses Admin</h1>
-            <p class="text-center mb-5" style="color: var(--bb-on-surface-variant);">Silakan masuk untuk mengelola
-                portal batik Anda.</p>
-            <!-- Login Form -->
-            <form action="{{ route('login.action') }}" class="w-100 d-flex flex-column gap-4" method="POST">
-                <div>
-                    <label class="form-label label-caps text-uppercase mb-1" for="admin_email">Email Admin</label>
-                    <input class="form-control bg-transparent border-secondary-container" id="admin_email"
-                        name="email" placeholder="nama@batiknusantara.com" required="" type="email" />
+    <main class="flex-grow-1 p-3 d-flex align-items-center justify-content-center">
+        <div class="card border-0 ambient-shadow w-100" style="max-width: 400px; background-color: var(--bg-color); border: 1px solid var(--border-color);">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <img alt="Batik Nusantara Logo" class="rounded-circle object-fit-cover mb-3"
+                        src="{{ asset('images/logo.jpg') }}"
+                        style="width: 72px; height: 72px;" />
+                    <h2 class="font-heading text-primary-custom fw-bold mb-0">Login Admin</h2>
                 </div>
-                <div>
-                    <label class="form-label label-caps text-uppercase mb-1" for="admin_password">Kata Sandi</label>
-                    <input class="form-control bg-transparent border-secondary-container" id="admin_password"
-                        name="password" placeholder="••••••••" required="" type="password" />
+
+                @if ($errors->any())
+                    <div class="alert alert-danger py-2" role="alert">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
+
+                <form action="{{ route('login.action') }}" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">Email</label>
+                        <input name="email" type="email" class="form-control" id="email"
+                            placeholder="admin@gmail.com" required="" style="border-color: var(--border-color);" value="{{ old('email') }}">
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <input name="password" type="password" class="form-control" id="password"
+                            placeholder="••••••••" required="" style="border-color: var(--border-color);">
+                    </div>
+                    <button type="submit" class="btn w-100 text-white" style="background-color: var(--primary-color);">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i>Masuk
+                    </button>
+                </form>
+
+                <div class="text-center mt-3">
+                    <a class="text-secondary-custom" href="{{ route('home') }}" style="text-decoration: none;">&larr; Kembali ke Beranda</a>
                 </div>
-                <button class="btn btn-primary-brand w-100 py-2 mt-2 label-caps text-uppercase shadow-sm"
-                    type="submit">
-                    Masuk Ke Admin
-                </button>
-            </form>
+            </div>
         </div>
     </main>
-    <!-- Minimal Footer -->
-    <footer
-        class="w-100 py-4 footer-bg border-top border-secondary-container d-flex justify-content-center align-items-center px-3 px-md-5">
-        <p class="mb-0 text-center" style="color: var(--bb-on-surface-variant);">
-            © 2026 Batik Nusantara. Crafted for clarity.
-        </p>
-    </footer>
-    <!-- Bootstrap 5.3 JS Bundle -->
-    <script crossorigin="anonymous" integrity="sha384-YvpcrYf0tY3lHB60NNkmxc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

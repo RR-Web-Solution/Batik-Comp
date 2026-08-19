@@ -18,168 +18,6 @@
         href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@100..900&amp;family=Work+Sans:wght@100..900&amp;display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {{-- <style>
-        :root {
-            --bb-primary: #32170d;
-            --bb-primary-container: #4b2c20;
-            --bb-on-primary: #ffffff;
-            --bb-background: #fbf9f7;
-            --bb-surface: #fbf9f7;
-            --bb-surface-container-low: #f5f3f1;
-            --bb-surface-container-lowest: #ffffff;
-            --bb-on-background: #1b1c1b;
-            --bb-on-surface-variant: #504440;
-            --bb-secondary-container: #ebddd2;
-            --bb-outline-variant: #d5c3bd;
-
-            --font-headline: "Source Serif 4", serif;
-            --font-body: "Work Sans", sans-serif;
-        }
-
-        body {
-            background-color: var(--bb-background);
-            color: var(--bb-on-background);
-            font-family: var(--font-body);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Typography Utilities */
-        .font-headline {
-            font-family: var(--font-headline);
-        }
-
-        .text-primary-custom {
-            color: var(--bb-primary);
-        }
-
-        .text-muted-custom {
-            color: var(--bb-on-surface-variant);
-        }
-
-        .bg-surface {
-            background-color: var(--bb-surface);
-        }
-
-        .bg-surface-low {
-            background-color: var(--bb-surface-container-low);
-        }
-
-        .bg-surface-lowest {
-            background-color: var(--bb-surface-container-lowest);
-        }
-
-        .display-lg {
-            font-size: 32px;
-            font-weight: 700;
-            line-height: 40px;
-        }
-
-        @media (min-width: 768px) {
-            .display-lg {
-                font-size: 48px;
-                line-height: 56px;
-                letter-spacing: -0.02em;
-            }
-        }
-
-        .headline-md {
-            font-size: 32px;
-            font-weight: 600;
-            line-height: 40px;
-        }
-
-        .headline-sm {
-            font-size: 24px;
-            font-weight: 600;
-            line-height: 32px;
-        }
-
-        .label-caps {
-            font-size: 12px;
-            font-weight: 600;
-            line-height: 16px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .body-lg {
-            font-size: 18px;
-            font-weight: 400;
-            line-height: 28px;
-        }
-
-        /* Components */
-        .navbar-custom {
-            border-bottom: 1px solid var(--bb-secondary-container);
-            background-color: var(--bb-surface);
-        }
-
-        .product-card {
-            border: 1px solid var(--bb-outline-variant);
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 20px -2px rgba(43, 26, 17, 0.05);
-            transition: box-shadow 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 4px 20px -2px rgba(43, 26, 17, 0.15);
-        }
-
-        .product-img-wrapper {
-            aspect-ratio: 1 / 1;
-            overflow: hidden;
-            background-color: var(--bb-surface-container-low);
-            position: relative;
-        }
-
-        .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease-out;
-        }
-
-        .product-card:hover .product-img {
-            transform: scale(1.05);
-        }
-
-        .badge-flavor {
-            background-color: var(--bb-secondary-container);
-            color: var(--bb-primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 50rem;
-        }
-
-        .btn-primary-custom {
-            background-color: var(--bb-primary);
-            color: var(--bb-on-primary);
-            border: none;
-            transition: background-color 0.2s ease;
-        }
-
-        .btn-primary-custom:hover {
-            background-color: var(--bb-primary-container);
-            color: var(--bb-on-primary);
-        }
-
-        footer {
-            border-top: 1px solid var(--bb-secondary-container);
-        }
-
-        .footer-link {
-            color: var(--bb-on-surface-variant);
-            text-decoration: underline;
-            transition: color 0.2s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--bb-primary);
-        }
-    </style> --}}
 </head>
 
 <body>
@@ -187,9 +25,8 @@
     <nav class="navbar navbar-custom sticky-top py-2">
         <div class="container-xl px-3 px-md-5">
             <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="{{ route('home') }}">
-                <i class="fa-solid fa-mug-hot text-primary-custom fs-4"></i>
                 <img alt="Batik Nusantara Logo" class="d-inline-block align-text-top" height="32"
-                    src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
+                    src="{{ asset('images/logo.jpg') }}"
                     width="auto" />
                 <span class="font-headline headline-md text-primary-custom mb-0">Batik Nusantara</span>
             </a>
@@ -212,23 +49,30 @@
             <div class="row g-4">
                 @foreach ($products as $product)
                     <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card product-card bg-surface-lowest">
-                        <div class="card-body d-flex flex-column p-4">
-                            <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
-                                <h2 class="font-headline headline-sm text-primary-custom mb-0">
-                                    {{ $product->name }}
-                                </h2>
-                                <span class="font-headline headline-sm text-muted-custom text-nowrap">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        <div class="card product-card bg-surface-lowest">
+                            @if ($product->image)
+                                <img src="{{ asset('uploads/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}" style="height: 200px; object-fit: cover;">
+                            @else
+                                <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="fa-solid fa-image fa-3x text-white-50"></i>
+                                </div>
+                            @endif
+                            <div class="card-body d-flex flex-column p-4">
+                                <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
+                                    <h2 class="font-headline headline-sm text-primary-custom mb-0">
+                                        {{ $product->name }}
+                                    </h2>
+                                    <span class="font-headline headline-sm text-muted-custom text-nowrap">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                </div>
+                                <p class="card-text text-muted-custom mb-4 flex-grow-1">{{ $product->description }}</p>
+                                <button
+                                    class="btn btn-primary-custom w-100 label-caps py-2 d-flex justify-content-center align-items-center gap-2">
+                                    <i class="fa-solid fa-cart-shopping"></i>
+                                    Buy Now
+                                </button>
                             </div>
-                            <p class="card-text text-muted-custom mb-4 flex-grow-1">{{ $product->description }}</p>
-                            <button
-                                class="btn btn-primary-custom w-100 label-caps py-2 d-flex justify-content-center align-items-center gap-2">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                                Buy Now
-                            </button>
                         </div>
                     </div>
-                </div>
                 @endforeach
             </div>
         </section>

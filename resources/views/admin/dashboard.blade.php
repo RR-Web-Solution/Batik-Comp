@@ -16,57 +16,6 @@
         rel="stylesheet" />
     <!-- Custom Styles for Artisanal Batik Theme -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    {{-- <style>
-        :root {
-            --primary-color: #32170d;
-            --bg-color: #fbf9f7;
-            --text-color: #1b1c1b;
-            --text-muted: #504440;
-            --border-color: #d5c3bd;
-            --font-heading: "Source Serif 4", serif;
-            --font-body: "Work Sans", sans-serif;
-            --hover-bg: #e4e2e0;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-body);
-            height: 100vh;
-        }
-
-        .font-heading {
-            font-family: var(--font-heading);
-        }
-
-        .text-primary-custom {
-            color: var(--primary-color) !important;
-        }
-
-        .text-muted-custom {
-            color: var(--text-muted) !important;
-        }
-
-        .header-custom {
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .nav-link-custom {
-            color: var(--text-muted);
-            font-family: var(--font-body);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: background-color 0.2s, color 0.2s;
-        }
-
-        .nav-link-custom:hover {
-            background-color: var(--hover-bg);
-            color: var(--text-color);
-        }
-    </style> --}}
 </head>
 
 <body class="d-flex flex-column">
@@ -76,7 +25,7 @@
             <div class="d-flex align-items-center gap-2">
                 <a href="{{ route('dashboard') }}">
                     <img alt="Batik Nusantara Logo" class="rounded object-fit-cover"
-                    src="https://lh3.googleusercontent.com/aida/AP1WRLudyyAt8ZB7awYRpuMI8z_Ab8YR0g9GymAfD2P3xCExUbi25yI7a5cGKjLUBeCOMNx1Wh77h02NCOpRefLSZINF1gWeffMZ9heVzLZAo2XsT6ds893HEFBppohD73ilcoU8z7aNmNDGhfEp0PidH5lP0l-2kbxGM1C8MebAMSsZGDp5YRpqyAQERY2LO0zRRr28TgyY_hWTBRSszOHASJi8KJjA1xXlNLgnaIkqBEsbDZEVNsgm79dBqa4"
+                    src="{{ asset('images/logo.jpg') }}"
                     style="width: 32px; height: 32px;" />
                 </a>
                 <span class="font-heading text-primary-custom fs-3 fw-semibold mb-0">Batik Nusantara</span>
@@ -92,7 +41,7 @@
                 </a>
                 <a class="nav-link-custom d-flex align-items-center gap-2 p-2 rounded" href="{{ route('logout') }}">
                     <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Logout</span>
+                    <span>Keluar</span>
                 </a>
             </div>
         </div>
