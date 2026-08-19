@@ -1,0 +1,20 @@
+kind: wasmer.io/App.v0
+name: batik-nusantara
+description: Batik Nusantara storefront (Laravel + MySQL) on Wasmer Edge
+package: batik-nusantara/batik-nusantara
+
+env:
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_URL: "https://batik-nusantara.wasmer.app"
+
+capabilities:
+  database:
+    engine: mysql
+
+locality:
+  regions:
+    - ap-singapore
+
+scaling:
+  mode: single_concurrency
