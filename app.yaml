@@ -8,6 +8,7 @@ env:
   APP_DEBUG: "false"
   APP_URL: "https://batik-mock.wasmer.app"
   DB_CONNECTION: mysql
+  DB_DATABASE: db_ec78187e
 
 capabilities:
   database:
