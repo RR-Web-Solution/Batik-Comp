@@ -25,3 +25,5 @@ volumes:
   - name: uploads
     mount: /app/public/uploads
 # uploads persisted on Wasmer volume
+
+# verifying volume persistence after /app mount fix
