@@ -1,7 +1,7 @@
 kind: wasmer.io/App.v0
-name: batik-mock
+name: coffee-comp-mock
 description: Batik Nusantara storefront (Laravel + MySQL) on Wasmer Edge
-package: batik-mock/batik-mock
+package: rndyv9/coffee-comp-mock
 
 env:
   APP_ENV: production
@@ -18,12 +18,3 @@ locality:
 
 scaling:
   mode: single_concurrency
-
-jobs:
-  - name: migrate-db
-    trigger: post-deployment
-    action:
-      execute:
-        command: php
-        cli_args: ["artisan", "migrate", "--seed", "--force"]
-        timeout: 5m
