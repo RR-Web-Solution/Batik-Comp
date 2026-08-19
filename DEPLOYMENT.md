@@ -1,126 +1,113 @@
-# DEPLOYMENT.md — Deploy Batik Nusantara ke Wasmer Edge
+# DEPLOYMENT.md — Deploy Batik Nusantara ke Railway
 
-Panduan men-deploy proyek Laravel ini (PHP 8.5, MySQL) ke **Wasmer Edge** (gratis
-untuk proyek hobby: ~100k request/bulan, SSL otomatis, managed MySQL bawaan, tanpa
-kartu kredit). Sumber resmi: https://docs.wasmer.io/edge/guides/laravel
+Panduan men-deploy proyek Laravel ini ke **Railway** (https://railway.com) — platform
+usage-based yang mendeteksi Laravel otomatis (Railpack → php-fpm + Caddy) dan punya
+plugin MySQL/Postgres. Gratis dicoba **tanpa kartu kredit** (trial $5 / 30 hari); lanjut
+pakai = usage-based (lihat §8). Sumber resmi:
+https://docs.railway.com/guides/laravel
 
 ---
 
 ## 1. Prasyarat
 
-- Akun di https://wasmer.io (login dengan GitHub).
-- Repo ini sudah di-push ke GitHub.
-- CLI Wasmer (opsional, untuk debug/secrets): `curl https://wasmer.sh -sSfL | sh`
+- Akun di https://railway.com (login dengan GitHub).
+- Repo ini sudah di-push ke GitHub (`github.com/rndyv9/Coffee-Comp-Mock`).
+- Aplikasi butuh PHP `^8.3` (Railpack otomatis menyediakan runtime PHP modern).
 
-## 2. Buat `app.yaml` di root proyek
+## 2. Deploy dari GitHub (cara paling mudah)
 
-```yaml
-kind: wasmer.io/App.v0
-name: batik-nusantara
-package: batik-nusantara/batik-nusantara
+1. **New Project** → **Deploy from GitHub repo**.
+2. Hubungkan akun GitHub jika belum, pilih repo `Coffee-Comp-Mock`.
+3. Klik **Add Variables** → isi minimal `APP_KEY` (lihat §3).
+4. Klik **Deploy**.
 
-env:
-  APP_ENV: production
-  APP_DEBUG: "false"
-  APP_URL: "https://batik-nusantara.wasmer.app"
+Railway otomatis mendeteksi Laravel (file `artisan` + `composer.json`) dan menjalankannya
+via **php-fpm + Caddy** — tanpa Dockerfile. `composer install` dijalankan otomatis.
 
-capabilities:
-  database:
-    engine: mysql
-
-locality:
-  regions:
-    - ap-singapore
-
-scaling:
-  mode: single_concurrency
-```
-
-Catatan:
-- `capabilities.database` → Wasmer membuatkan MySQL ter-manage dan mengisi otomatis
-  env `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` (Laravel tinggal
-  memakainya lewat `.env` config database). Engine default memang `mysql`.
-- `locality.regions` harus **satu region yang mendukung database** — cek daftarnya di
-  https://docs.wasmer.io/edge/learn/regions (contoh yang dipakai docs: `fr-roub1`).
-- `scaling.mode: single_concurrency` wajib untuk PHP (single-threaded).
-
-## 3. Deploy
-
-**Lewat web (paling mudah):**
-1. Buka https://wasmer.io/apps → **Deploy** → pilih repo GitHub ini.
-2. Wasmer mendeteksi Laravel otomatis (repo berisi `*.php` → install Composer deps,
-   entry point `public/index.php`).
-3. Aplikasi langsung live di `https://batik-nusantara.wasmer.app`. Setiap `git push`
-   berikutnya auto-deploy.
+> Catatan: Railway **tidak mendukung Docker Compose** — jangan pakai `docker-compose.yml`
+> / Laravel Sail untuk deploy.
 
 **Alternatif CLI:**
 ```bash
-wasmer login
-wasmer deploy          # guided: publish package + buat app
-wasmer app secrets create APP_KEY "base64:$(php artisan key:generate --show)"
+railway init        # dari root proyek
+railway up
 ```
 
-## 4. Env & secrets
+## 3. Environment variables
 
-- **`APP_KEY` wajib diisi** — generate sekali:
-  `php artisan key:generate --show`, lalu set sebagai env/secret (lihat `env:` di
-  `app.yaml` atau `wasmer app secrets create APP_KEY "base64:..."`).
-- Sebelum deploy, pastikan `.env.example` tidak menyimpan `APP_KEY` produksi.
+Di service → **Variables**, set minimal:
 
-## 5. Setup database (sekali jalan)
+| Variable | Nilai |
+| --- | --- |
+| `APP_KEY` | Output dari `php artisan key:generate --show` (wajib) |
+| `APP_ENV` | `production` |
+| `APP_DEBUG` | `false` |
+| `APP_URL` | URL domain Railway (lihat §6) |
+| `DB_CONNECTION` | `mysql` (default Laravel `sqlite` — wajib diganti) |
+| `DB_URL` | `${{MySQL.DATABASE_URL}}` (referensi plugin DB, lihat §4) |
 
-MySQL otomatis sudah ada; tinggal migrasi + seed. Jalankan **sekali** setelah deploy
-pertama (Seeder idempotent untuk produk/kategori/setting; `OrderSeeder` membuat order
-demo baru — jangan jalankan ulang tanpa perlu):
+## 4. Database (MySQL plugin)
 
-**Via SSH app** (didokumentasikan Wasmer):
-```yaml
-capabilities:
-  ssh:
-    enabled: true
-    users:
-      - username: <app-shortid>_admin
-        authorized_keys:
-          - "ssh-rsa AAAA..."
+1. Di Project Canvas → **New** → pilih **MySQL** plugin.
+2. Referensi koneksi ke service app: atur `DB_URL` = `${{MySQL.DATABASE_URL}}` (Laravel
+   membaca `DB_URL` untuk koneksi MySQL, lihat `config/database.php`).
+   - Jika `DATABASE_URL` tidak tersedia di plugin MySQL, isi manual `DB_HOST`,
+     `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` dari variabel plugin.
+3. Variabel diberi prefix nama plugin (`${{MySQL.<var>}}`), aman digunakan antar service.
+
+## 5. Migrasi & seed (sekali setup)
+
+Buat script `railway/init-app.sh` di repo, lalu daftarkan sebagai **Pre-Deploy Command**:
+
+```bash
+#!/bin/bash
+set -e
+
+php artisan migrate --force
+php artisan optimize:clear
+php artisan config:cache
+php artisan event:cache
+php artisan route:cache
+php artisan view:cache
 ```
-lalu `wasmer app ssh <app> -- php artisan migrate --seed --force`.
 
-**Alternatif: job `post-deployment` sekali pakai** — tambahkan ke `app.yaml`, deploy
-sekali, lalu hapus:
-```yaml
-jobs:
-  - name: migrate-db
-    trigger: post-deployment
-    action:
-      execute:
-        command: php
-        cli_args: ["artisan", "migrate", "--seed", "--force"]
-        timeout: 5m
-```
+- **Build section** → **Custom Build Command**: `composer install --no-dev && npm run build`
+  (opsional; app ini tidak memakai Vite, cukup `composer install --no-dev`).
+- **Deploy section** → **Pre-Deploy Command**: `chmod +x ./railway/init-app.sh && sh ./railway/init-app.sh`
+- Untuk **seed sekali** (data demo + user admin `admin@gmail.com` / `123123123`):
+  jalankan `php artisan migrate --seed --force` satu kali (mis. lewat Pre-Deploy Command
+  sementara), lalu kembalikan ke `php artisan migrate --force`.
+  (Seeder idempotent; `OrderSeeder` membuat order demo baru tiap jalan.)
 
-## 6. Update & rollback
+## 6. Networking
 
-- Update = `git push` ke branch yang terhubung (auto-deploy).
-- Rollback: Wasmer menyimpan versi app — pilih versi sebelumnya di dashboard
-  (https://wasmer.io/apps → app → Versions).
+Service app tidak publik secara default. Di service → **Settings** → **Networking** →
+**Generate Domain** untuk mendapatkan URL `https://<nama>.up.railway.app`. Set `APP_URL`
+sesuai domain tersebut (atau custom domain yang dipetakan).
 
-## 7. Batasan yang perlu diketahui
+## 7. Update & rollback
 
-- **Gambar upload admin (`public/uploads`) tidak persisten** — filesystem Edge
-  bersifat sementara (hilang saat redeploy/scale-to-zero). Commit gambar awal ke repo,
-  atau tambah *volume* (`volumes:` di `app.yaml`) — tapi volume RW-many belum cocok
-  untuk kasus kompleks. Untuk demo, upload lewat admin dianggap sementara.
-- Database MySQL satu per app; engine tidak bisa diubah tanpa hapus DB.
-- PHP single-threaded → `single_concurrency`; jangan harap 1 instance melayani banyak
-  request paralel (Edge menskalakan instance otomatis).
+- **Update** = `git push` ke branch yang terhubung → Railway auto-deploy.
+- **Rollback** = tab **Deployments** di service → pilih deployment sebelumnya → **Deploy**.
 
-## 8. Custom domain (opsional)
+## 8. Biaya & catatan
 
-Di dashboard app → Domains, tambahkan domain `batik-nusantara.dev` (atau lainnya),
-lalu arahkan DNS CNAME ke `batik-nusantara.wasmer.app`. SSL diurus otomatis.
+- **Free Trial**: $5 kredit / 30 hari, **tanpa kartu kredit**. Ada juga **Free plan**
+  ($0/bulan, $1 kredit usage/bulan) — sangat ketat untuk Laravel + MySQL.
+- **Hobby**: $5/bulan (termasuk $5 usage) — realistis untuk proyek ini.
+  Railway usage-based: bayar sesuai CPU/RAM/egress yang dipakai (trial $5 habis → berhenti
+  jika tidak upgrade).
+- **Upload admin (`public/uploads`) tidak persisten** antar redeploy kecuali pasang
+  **Volume** (Service → Settings → Volumes → mount ke path `public/uploads` di direktori
+  app). Untuk demo, cukup commit gambar ke repo.
+- Jika build mengeluh **missing PHP extension** (mis. `gd`, `exif`, `zip`), set env
+  `RAILPACK_PHP_EXTENSIONS=zip,gd,exif` (sesuaikan kebutuhan).
+- Bila perlu pin versi PHP (mis. 8.4), tambahkan file `.railpack/config.toml` dengan
+  `[php] version = "8.4"`.
 
 ---
 
-Sumber: [Laravel on Wasmer Edge](https://docs.wasmer.io/edge/guides/laravel/) ·
-[App Configuration](https://docs.wasmer.io/edge/configuration) · [Jobs](https://docs.wasmer.io/edge/configuration/jobs) ·
-[Supported Frameworks](https://docs.wasmer.io/edge/learn/supported-frameworks-and-languages/)
+Sumber: [Railway Laravel Guide](https://docs.railway.com/guides/laravel) ·
+[Railpack PHP](https://railpack.com/languages/php) ·
+[Railway Pricing](https://railway.com/pricing) ·
+[Railway MySQL Plugin](https://docs.railway.com/databases/mysql)
