@@ -55,7 +55,7 @@
     <!-- Main Content Canvas -->
     <main class="d-flex flex-column gap-5 mb-5">
         <!-- Hero Section -->
-        <section class="container-xl mt-4">
+        <section class="container-xl mt-4 px-5">
             <div class="row align-items-center g-4 flex-column-reverse flex-md-row">
                 <div class="col-12 col-md-6 text-center text-md-start">
                     <h1 class="display-4 fw-bold text-primary-custom mb-3">Seni Membatik yang Sempurna</h1>
