@@ -1,12 +1,12 @@
 kind: wasmer.io/App.v0
-name: batik-nusantara-rw
+name: batik-mock
 description: Batik Nusantara storefront (Laravel + MySQL) on Wasmer Edge
-package: batik-nusantara-rw/batik-nusantara-rw
+package: batik-mock/batik-mock
 
 env:
   APP_ENV: production
   APP_DEBUG: "false"
-  APP_URL: "https://batik-nusantara-rw.wasmer.app"
+  APP_URL: "https://batik-mock.wasmer.app"
 
 capabilities:
   database:
@@ -18,3 +18,12 @@ locality:
 
 scaling:
   mode: single_concurrency
+
+jobs:
+  - name: migrate-db
+    trigger: post-deployment
+    action:
+      execute:
+        command: php
+        cli_args: ["artisan", "migrate", "--seed", "--force"]
+        timeout: 5m
