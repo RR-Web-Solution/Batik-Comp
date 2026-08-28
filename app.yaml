@@ -1,7 +1,7 @@
 kind: wasmer.io/App.v0
 name: coffee-comp-mock
 description: Batik Nusantara storefront (Laravel + MySQL) on Wasmer Edge
-package: rndyv9/coffee-comp-mock
+package: rr-web-solution/batik-comp
 
 env:
   APP_ENV: production
