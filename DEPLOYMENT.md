@@ -11,7 +11,7 @@ https://docs.railway.com/guides/laravel
 ## 1. Prasyarat
 
 - Akun di https://railway.com (login dengan GitHub).
-- Repo ini sudah di-push ke GitHub (`github.com/rndyv9/Coffee-Comp-Mock`).
+- Repo ini sudah di-push ke GitHub (`github.com/RR-Web-Solution/Batik-Comp`).
 - Aplikasi butuh PHP `^8.3` (Railpack otomatis menyediakan runtime PHP modern).
 
 ## 2. Deploy dari GitHub (cara paling mudah)

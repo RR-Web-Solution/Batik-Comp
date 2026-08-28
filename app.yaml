@@ -1,0 +1,26 @@
+kind: wasmer.io/App.v0
+name: coffee-comp-mock
+description: Batik Nusantara storefront (Laravel + MySQL) on Wasmer Edge
+package: rr-web-solution/batik-comp
+
+env:
+  APP_ENV: production
+  APP_DEBUG: "false"
+  APP_URL: "https://batik-mock.wasmer.app"
+  DB_CONNECTION: mysql
+  DB_DATABASE: db_ec78187e
+
+capabilities:
+  database:
+    engine: mysql
+
+locality:
+  regions:
+    - fr-roub1
+
+scaling:
+  mode: single_concurrency
+
+volumes:
+  - name: uploads
+    mount: /app/public/uploads
