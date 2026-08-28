@@ -15,6 +15,7 @@ it('redirects guests to the login page for admin routes', function (string $rout
     '/order',
     '/category',
     '/setting',
+    '/testimonial',
 ]);
 
 it('lets an authenticated admin open admin pages', function () {

@@ -16,7 +16,7 @@ it('shows the products belonging to a category', function () {
     $category = Category::factory()->create(['name' => 'Batik Tulis']);
     $product = Product::factory()->inCategory($category)->create(['name' => 'Batik Parang Unik']);
 
-    $this->get(route('category.show', $category->slug))
+    $this->get(route('category.show', ['locale' => 'id', 'slug' => $category->slug]))
         ->assertOk()
         ->assertSee('Batik Tulis')
         ->assertSee('Batik Parang Unik');
@@ -28,7 +28,7 @@ it('does not show products from other categories', function () {
     Product::factory()->inCategory($category)->create(['name' => 'Batik Cap Modern']);
     Product::factory()->inCategory($other)->create(['name' => 'Kemeja Batik Dewasa']);
 
-    $this->get(route('category.show', $category->slug))
+    $this->get(route('category.show', ['locale' => 'id', 'slug' => $category->slug]))
         ->assertOk()
         ->assertSee('Batik Cap Modern')
         ->assertDontSee('Kemeja Batik Dewasa');

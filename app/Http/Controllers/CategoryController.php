@@ -7,7 +7,7 @@ use App\Models\Setting;
 
 class CategoryController extends Controller
 {
-    public function show(string $slug)
+    public function show($locale, string $slug)
     {
         $category = Category::where('slug', $slug)
             ->with('products')
