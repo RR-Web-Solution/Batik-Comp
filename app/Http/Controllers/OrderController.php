@@ -25,6 +25,7 @@ class OrderController extends Controller
 
         if ($existing) {
             return redirect()->route('order.success', [
+                'locale' => app()->getLocale(),
                 'orderNumber' => $existing->order_number,
             ]);
         }
@@ -34,6 +35,7 @@ class OrderController extends Controller
         $order->save();
 
         return redirect()->route('order.success', [
+            'locale' => app()->getLocale(),
             'orderNumber' => $order->order_number,
         ]);
     }
@@ -55,7 +57,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function success(string $orderNumber)
+    public function success($locale, string $orderNumber)
     {
         return view('order.success', [
             'order' => Order::where('order_number', $orderNumber)->firstOrFail(),

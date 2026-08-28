@@ -23,7 +23,7 @@
     <header class="w-100 header-custom">
         <div class="container-fluid px-3 py-3 d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center gap-2">
-                <a href="{{ route('home') }}">
+                <a href="{{ route('home', ['locale' => 'id']) }}">
                     <img alt="Batik Nusantara Logo" class="rounded object-fit-cover"
                         src="{{ asset('images/logo.jpg') }}"
                         style="width: 32px; height: 32px;" />
@@ -67,7 +67,7 @@
                 </form>
 
                 <div class="text-center mt-3">
-                    <a class="text-secondary-custom" href="{{ route('home') }}" style="text-decoration: none;">&larr; Kembali ke Beranda</a>
+                    <a class="text-secondary-custom" href="{{ route('home', ['locale' => 'id']) }}" style="text-decoration: none;">&larr; Kembali ke Beranda</a>
                 </div>
             </div>
         </div>

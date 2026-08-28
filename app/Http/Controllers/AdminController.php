@@ -6,16 +6,22 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Setting;
+use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class AdminController extends Controller
 {
     public function index()
     {
+        if (Auth::check()) {
+            return redirect('/dashboard');
+        }
+
         return view('admin.index');
     }
 
@@ -31,13 +37,34 @@ class AdminController extends Controller
 
         $recentOrders = Order::with('product')->latest()->limit(10)->get();
 
-        return view('admin.dashboard', compact('stats', 'recentOrders'));
+        $monthlyRevenue = Order::valid()
+            ->where('created_at', '>=', now()->subMonths(5)->startOfMonth())
+            ->select(
+                DB::raw("DATE_FORMAT(created_at, '%Y-%m') as month"),
+                DB::raw('SUM(total) as revenue'),
+            )
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('revenue', 'month')
+            ->toArray();
+
+        $ordersPerCategory = Order::valid()
+            ->join('products', 'orders.product_id', '=', 'products.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('categories.name as category', DB::raw('COUNT(*) as count'))
+            ->groupBy('categories.name')
+            ->pluck('count', 'category')
+            ->toArray();
+
+        return view('admin.dashboard', compact('stats', 'recentOrders', 'monthlyRevenue', 'ordersPerCategory'));
     }
 
     public function action(Request $request)
     {
-        // var_dump($request->all());
-        // die();
+        if ($request->isMethod('get')) {
+            return Auth::check() ? redirect('/dashboard') : redirect('/admin');
+        }
+
         $credential = $request->only('email', 'password');
 
         // Auth:attempt: Cek email dan password betul
@@ -326,6 +353,65 @@ class AdminController extends Controller
         $product->delete();
 
         return redirect()->route('product')->with('success', 'Produk berhasil dihapus');
+    }
+
+    public function testimonials()
+    {
+        $testimonial = Testimonial::orderBy('sort_order')->get();
+
+        return view('admin.testimonial', compact('testimonial'));
+    }
+
+    public function createTestimonial(Request $request)
+    {
+        $request->validate([
+            'customer_name' => 'required|string|max:100',
+            'customer_title' => 'nullable|string|max:100',
+            'content' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        Testimonial::create([
+            'customer_name' => $request->input('customer_name'),
+            'customer_title' => $request->input('customer_title'),
+            'content' => $request->input('content'),
+            'rating' => $request->input('rating'),
+            'is_active' => $request->boolean('is_active', true),
+            'sort_order' => $request->input('sort_order', 0),
+        ]);
+
+        return redirect()->route('testimonial')->with('success', 'Testimonial berhasil ditambahkan.');
+    }
+
+    public function editTestimonial(Request $request, $id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+
+        $request->validate([
+            'customer_name' => 'required|string|max:100',
+            'customer_title' => 'nullable|string|max:100',
+            'content' => 'required|string',
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        $testimonial->update([
+            'customer_name' => $request->input('customer_name'),
+            'customer_title' => $request->input('customer_title'),
+            'content' => $request->input('content'),
+            'rating' => $request->input('rating'),
+            'is_active' => $request->boolean('is_active', true),
+            'sort_order' => $request->input('sort_order', 0),
+        ]);
+
+        return redirect()->route('testimonial')->with('success', 'Testimonial berhasil diupdate.');
+    }
+
+    public function deleteTestimonial($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        $testimonial->delete();
+
+        return redirect()->route('testimonial')->with('success', 'Testimonial berhasil dihapus.');
     }
 
     private function storeUploadedImage(UploadedFile $image, string $prefix = 'product_'): string

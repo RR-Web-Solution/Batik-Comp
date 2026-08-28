@@ -14,6 +14,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&amp;family=Work+Sans:wght@400;600&amp;display=swap"
         rel="stylesheet" />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <!-- Custom Styles for Artisanal Batik Theme -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <!-- DataTables: core + buttons + responsive -->
@@ -102,6 +104,25 @@
                 @endforeach
             </div>
 
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-lg-6">
+                    <div class="bg-surface-lowest border border-outline-variant rounded-4 p-4 ambient-shadow h-100">
+                        <h3 class="font-heading text-primary-custom fw-bold mb-3">Pendapatan 6 Bulan Terakhir</h3>
+                        <div style="position: relative; height: 260px;">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="bg-surface-lowest border border-outline-variant rounded-4 p-4 ambient-shadow h-100">
+                        <h3 class="font-heading text-primary-custom fw-bold mb-3">Pesanan per Kategori</h3>
+                        <div style="position: relative; height: 260px;">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-surface-lowest border border-outline-variant rounded-4 p-4 ambient-shadow">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h3 class="font-heading text-primary-custom fw-bold mb-0">Pesanan Terbaru</h3>
@@ -157,6 +178,74 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.10/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const monthlyRevenue = @json($monthlyRevenue);
+            const ordersPerCategory = @json($ordersPerCategory);
+
+            const browns = ['#8B4513', '#A0522D', '#CD853F', '#D2691E', '#DEB887', '#F4A460'];
+            const brownsAlpha = browns.map(c => c + '33');
+
+            const months = Object.keys(monthlyRevenue).sort();
+            const revenueValues = months.map(m => monthlyRevenue[m]);
+            const monthLabels = months.map(m => {
+                const [y, mo] = m.split('-');
+                return new Date(y, mo - 1).toLocaleDateString('id-ID', { month: 'short', year: '2-digit' });
+            });
+
+            new Chart(document.getElementById('revenueChart'), {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [{
+                        label: 'Pendapatan (Rp)',
+                        data: revenueValues,
+                        borderColor: '#8B4513',
+                        backgroundColor: '#8B451333',
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#8B4513',
+                        pointRadius: 4,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { callback: v => 'Rp ' + v.toLocaleString('id-ID') },
+                        },
+                    },
+                },
+            });
+
+            const catLabels = Object.keys(ordersPerCategory);
+            const catValues = catLabels.map(l => ordersPerCategory[l]);
+
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: catLabels,
+                    datasets: [{
+                        data: catValues,
+                        backgroundColor: browns.slice(0, catLabels.length),
+                        borderColor: '#fff',
+                        borderWidth: 2,
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 16 } },
+                    },
+                },
+            });
+        });
+    </script>
 
     <script>
         if (window.jQuery && $.fn.DataTable) {
