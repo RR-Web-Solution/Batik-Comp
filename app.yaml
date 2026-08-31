@@ -1,14 +1,14 @@
 kind: wasmer.io/App.v0
-name: coffee-comp-mock
+name: Batik-Comp
 description: Batik Nusantara storefront (Laravel + MySQL) on Wasmer Edge
-package: rr-web-solution/batik-comp
 
 env:
   APP_ENV: production
   APP_DEBUG: "false"
-  APP_URL: "https://batik-mock.wasmer.app"
+  APP_URL: "https://batik-comp.wasmer.app"
   DB_CONNECTION: mysql
-  DB_DATABASE: db_ec78187e
+  DB_DATABASE: db_3facc609
+  SESSION_DRIVER: cookie
 
 capabilities:
   database:
@@ -20,6 +20,15 @@ locality:
 
 scaling:
   mode: single_concurrency
+
+jobs:
+  - name: migrate-and-seed
+    trigger: post-deployment
+    action:
+      execute:
+        command: sh
+        cli_args: ["-c", "rm -f /app/bootstrap/cache/config.php && DB_CONNECTION=mysql DB_DATABASE=db_3facc609 php /app/artisan migrate --seed --force --no-interaction 2>&1"]
+        timeout: 5m
 
 volumes:
   - name: uploads
