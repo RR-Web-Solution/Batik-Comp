@@ -1,6 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminOrderController;
+use App\Http\Controllers\Admin\AdminProductController;
+use App\Http\Controllers\Admin\AdminSettingController;
+use App\Http\Controllers\Admin\AdminTestimonialController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
@@ -9,33 +16,39 @@ use App\Http\Controllers\ProductController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/admin', [AdminController::class, 'index']);
-Route::match(['GET', 'POST'], '/admin/action', [AdminController::class, 'action'])->name('login.action');
+Route::get('/admin', [AuthController::class, 'index']);
+Route::match(['GET', 'POST'], '/admin/action', [AuthController::class, 'action'])->name('login.action');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/logout', [AdminController::class, 'logout'])->name('logout');
-    Route::get('/user', [AdminController::class, 'user'])->name('user');
-    Route::post('/user', [AdminController::class, 'createUser'])->name('user.create');
-    Route::put('/user/{id}', [AdminController::class, 'editUser'])->name('user.edit');
-    Route::delete('/user/{id}', [AdminController::class, 'deleteUser'])->name('user.delete');
-    Route::get('/product', [AdminController::class, 'product'])->name('product');
-    Route::post('/product', [AdminController::class, 'createProduct'])->name('product.create');
-    Route::put('/product/{id}', [AdminController::class, 'editProduct'])->name('product.edit');
-    Route::delete('/product/{id}', [AdminController::class, 'deleteProduct'])->name('product.delete');
-    Route::get('/order', [AdminController::class, 'orders'])->name('order');
-    Route::get('/order/{id}', [AdminController::class, 'orderShow'])->name('order.show');
-    Route::patch('/order/{id}', [AdminController::class, 'updateOrderStatus'])->name('order.update');
-    Route::get('/category', [AdminController::class, 'categories'])->name('category');
-    Route::post('/category', [AdminController::class, 'createCategory'])->name('category.create');
-    Route::put('/category/{id}', [AdminController::class, 'editCategory'])->name('category.edit');
-    Route::delete('/category/{id}', [AdminController::class, 'deleteCategory'])->name('category.delete');
-    Route::get('/setting', [AdminController::class, 'settings'])->name('setting');
-    Route::put('/setting/{id}', [AdminController::class, 'updateSettings'])->name('setting.update');
-    Route::get('/testimonial', [AdminController::class, 'testimonials'])->name('testimonial');
-    Route::post('/testimonial', [AdminController::class, 'createTestimonial'])->name('testimonial.create');
-    Route::put('/testimonial/{id}', [AdminController::class, 'editTestimonial'])->name('testimonial.edit');
-    Route::delete('/testimonial/{id}', [AdminController::class, 'deleteTestimonial'])->name('testimonial.delete');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/user', [AdminUserController::class, 'index'])->name('user');
+    Route::post('/user', [AdminUserController::class, 'store'])->name('user.create');
+    Route::put('/user/{id}', [AdminUserController::class, 'update'])->name('user.edit');
+    Route::delete('/user/{id}', [AdminUserController::class, 'destroy'])->name('user.delete');
+
+    Route::get('/product', [AdminProductController::class, 'index'])->name('product');
+    Route::post('/product', [AdminProductController::class, 'store'])->name('product.create');
+    Route::put('/product/{id}', [AdminProductController::class, 'update'])->name('product.edit');
+    Route::delete('/product/{id}', [AdminProductController::class, 'destroy'])->name('product.delete');
+
+    Route::get('/order', [AdminOrderController::class, 'index'])->name('order');
+    Route::get('/order/{id}', [AdminOrderController::class, 'show'])->name('order.show');
+    Route::patch('/order/{id}', [AdminOrderController::class, 'updateStatus'])->name('order.update');
+
+    Route::get('/category', [AdminCategoryController::class, 'index'])->name('category');
+    Route::post('/category', [AdminCategoryController::class, 'store'])->name('category.create');
+    Route::put('/category/{id}', [AdminCategoryController::class, 'update'])->name('category.edit');
+    Route::delete('/category/{id}', [AdminCategoryController::class, 'destroy'])->name('category.delete');
+
+    Route::get('/setting', [AdminSettingController::class, 'index'])->name('setting');
+    Route::put('/setting/{id}', [AdminSettingController::class, 'update'])->name('setting.update');
+
+    Route::get('/testimonial', [AdminTestimonialController::class, 'index'])->name('testimonial');
+    Route::post('/testimonial', [AdminTestimonialController::class, 'store'])->name('testimonial.create');
+    Route::put('/testimonial/{id}', [AdminTestimonialController::class, 'update'])->name('testimonial.edit');
+    Route::delete('/testimonial/{id}', [AdminTestimonialController::class, 'destroy'])->name('testimonial.delete');
 });
 
 Route::prefix('{locale}')->middleware(SetLocale::class)->group(function () {
